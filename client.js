@@ -8,8 +8,18 @@ while (MRP_CLIENT == null) {
 
 let show = false
 RegisterCommand('vehicle', () => {
+    let ped = PlayerPedId();
+    let vehicle = GetVehiclePedIsIn(ped, false);
+    if (vehicle == 0)
+        return;
+
+    let driver = GetPedInVehicleSeat(vehicle, -1); //check who's driver
+    if (driver != ped) // not a driver
+        return;
+
     show = !show;
     let action = "show";
+    let obj = {}
     if (!show) {
         action = "hide";
         SetNuiFocus(false, false);
@@ -17,9 +27,25 @@ RegisterCommand('vehicle', () => {
         SetNuiFocus(true, true);
     }
 
-    SendNuiMessage(JSON.stringify({
-        type: action
-    }));
+    let doorsCount = GetNumberOfVehicleDoors(vehicle);
+
+    let doors = [];
+    for (let i = 0; i < doorsCount; i++) {
+        let door = {
+            index: i
+        };
+
+        let angle = GetVehicleDoorAngleRatio(vehicle, i);
+        door.open = (angle > 0);
+        doors.push(door);
+    }
+
+    obj = {
+        type: action,
+        doors: doors
+    };
+
+    SendNuiMessage(JSON.stringify(obj));
 });
 
 RegisterKeyMapping('vehicle', 'Open vehicle menu', 'keyboard', 'RBRACKET');
@@ -28,5 +54,20 @@ RegisterNuiCallbackType('close');
 on('__cfx_nui:close', (data, cb) => {
     SetNuiFocus(false, false);
     show = !show;
+    cb();
+});
+
+RegisterNuiCallbackType('openDoors');
+on('__cfx_nui:openDoors', (data, cb) => {
+    let ped = PlayerPedId();
+    let vehicle = GetVehiclePedIsIn(ped, false);
+    if (vehicle == 0)
+        return;
+
+    if (data.open)
+        SetVehicleDoorOpen(vehicle, data.doors, false, false);
+    else
+        SetVehicleDoorShut(vehicle, data.doors, false);
+
     cb();
 });
