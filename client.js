@@ -30,6 +30,12 @@ let triggerUI = function(show) {
     let doors = [];
     let hasBoot = GetIsDoorValid(vehicle, 5);
     let hasBonnet = GetIsDoorValid(vehicle, 4);
+    let windowCount = doorsCount;
+    if (hasBoot)
+        windowCount--;
+    if (hasBonnet)
+        windowCount--;
+
     for (let i = 0; i < doorsCount; i++) {
         //reindex
         let index = i;
@@ -56,9 +62,19 @@ let triggerUI = function(show) {
         doors.push(door);
     }
 
+    let windows = [];
+    for (let i = 0; i < windowCount; i++) {
+        let index = i; //+2 is because 0 and 1 is windscreen
+        windows.push({
+            index: index,
+            open: false
+        });
+    }
+
     obj = {
         type: action,
-        doors: doors
+        doors: doors,
+        windows: windows
     };
 
     SendNuiMessage(JSON.stringify(obj));
@@ -72,6 +88,22 @@ RegisterNuiCallbackType('close');
 on('__cfx_nui:close', (data, cb) => {
     SetNuiFocus(false, false);
     triggerUI(false);
+    cb();
+});
+
+RegisterNuiCallbackType('toggleWindow');
+on('__cfx_nui:toggleWindow', (data, cb) => {
+    let ped = PlayerPedId();
+    let vehicle = GetVehiclePedIsIn(ped, false);
+
+    if (vehicle == 0)
+        return;
+
+    if (data.open)
+        RollUpWindow(vehicle, data.index);
+    else
+        RollDownWindow(vehicle, data.index);
+
     cb();
 });
 

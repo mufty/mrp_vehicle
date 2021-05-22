@@ -12,6 +12,10 @@ dependencies {
 }
 
 files {
+    'ui/images/icons/048-car-door-l-down.png',
+    'ui/images/icons/048-car-door-r-down.png',
+    'ui/images/icons/048-car-door-l-up.png',
+    'ui/images/icons/048-car-door-r-up.png',
     'ui/config.js',
     'ui/scripts/main.js',
     'ui/styles/style.css',

@@ -10,6 +10,15 @@ $(document).ready(function() {
         return html;
     };
 
+    createWindowButton = function(win) {
+        let leftRightClass = "ctrlL";
+        if (win.index % 2)
+            leftRightClass = "ctrlR";
+        let html = '<input type="checkbox" id="window_' + win.index + '">' +
+            '<label class="' + leftRightClass + '" for="window_' + win.index + '"></label>';
+        return html;
+    };
+
     window.addEventListener('message', function(event) {
         var data = event.data;
         switch (data.type) {
@@ -31,6 +40,23 @@ $(document).ready(function() {
                         });
                     }
                 }
+                $('.windows').html("");
+                if (data.windows && data.windows.length > 0) {
+                    for (let win of data.windows) {
+                        let winHtml = createWindowButton(win);
+                        $('.windows').append(winHtml);
+                        if (win.open)
+                            $('.windows #window_' + win.index).prop("checked", true);
+
+                        $('.windows #window_' + win.index).change(function() {
+                            $.post('https://mrp_vehicle/toggleWindow', JSON.stringify({
+                                index: win.index,
+                                open: !$('#window_' + win.index).is(':checked')
+                            }));
+                        });
+                    }
+                }
+                //TODO create windows buttons
                 $('.main_container').show();
                 break;
             case "hide":
