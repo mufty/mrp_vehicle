@@ -6,8 +6,7 @@ while (MRP_CLIENT == null) {
     print('Waiting for shared object....');
 }
 
-let show = false
-RegisterCommand('vehicle', () => {
+let triggerUI = function(show) {
     let ped = PlayerPedId();
     let vehicle = GetVehiclePedIsIn(ped, false);
     if (vehicle == 0)
@@ -17,7 +16,6 @@ RegisterCommand('vehicle', () => {
     if (driver != ped) // not a driver
         return;
 
-    show = !show;
     let action = "show";
     let obj = {}
     if (!show) {
@@ -46,14 +44,16 @@ RegisterCommand('vehicle', () => {
     };
 
     SendNuiMessage(JSON.stringify(obj));
-});
+}
 
-RegisterKeyMapping('vehicle', 'Open vehicle menu', 'keyboard', 'RBRACKET');
+on('mpr:vehicle:trigger', (show) => {
+    triggerUI(show);
+});
 
 RegisterNuiCallbackType('close');
 on('__cfx_nui:close', (data, cb) => {
     SetNuiFocus(false, false);
-    show = !show;
+    triggerUI(false);
     cb();
 });
 

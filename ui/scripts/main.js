@@ -1,11 +1,5 @@
 $(document).ready(function() {
     $('.main_container').hide();
-    $(document).keyup(e => {
-        if (e.key == "Escape") {
-            $.post('https://mrp_vehicle/close');
-            $('.main_container').hide();
-        }
-    });
 
     createDoorButton = function(doorIndex) {
         let html = '<label class="rocker rocker-small" id="doorIndex_' + doorIndex + '">' +

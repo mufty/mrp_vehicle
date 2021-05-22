@@ -21,4 +21,5 @@ files {
 
 client_scripts {
     'client.js',
+    'controls.lua',
 }
