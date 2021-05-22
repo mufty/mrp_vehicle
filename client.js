@@ -29,11 +29,21 @@ let triggerUI = function(show) {
 
     let doors = [];
     for (let i = 0; i < doorsCount; i++) {
+        //reindex
+        let index = i;
+        if (doorsCount < 5) {
+            //less then 4 door vehicle reindex boot and bonnet
+            if (i == doorsCount - 1)
+                index = 5; // boot
+            if (i == doorsCount - 2)
+                index = 4; // bonnet
+        }
+
         let door = {
-            index: i
+            index: index
         };
 
-        let angle = GetVehicleDoorAngleRatio(vehicle, i);
+        let angle = GetVehicleDoorAngleRatio(vehicle, index);
         door.open = (angle > 0);
         doors.push(door);
     }

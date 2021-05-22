@@ -23,8 +23,9 @@ $(document).ready(function() {
                             $('.mid #doorIndex_' + door.index + ' input').prop("checked", true);
 
                         $('.mid #doorIndex_' + door.index + ' input').change(function() {
+                            let index = door.index;
                             $.post('https://mrp_vehicle/openDoors', JSON.stringify({
-                                doors: door.index,
+                                doors: index,
                                 open: this.checked
                             }));
                         });
