@@ -28,14 +28,22 @@ let triggerUI = function(show) {
     let doorsCount = GetNumberOfVehicleDoors(vehicle);
 
     let doors = [];
+    let hasBoot = GetIsDoorValid(vehicle, 5);
+    let hasBonnet = GetIsDoorValid(vehicle, 4);
     for (let i = 0; i < doorsCount; i++) {
         //reindex
         let index = i;
-        if (doorsCount < 5) {
-            //less then 4 door vehicle reindex boot and bonnet
-            if (i == doorsCount - 1)
+        if (doorsCount == 3) { //3 door
+            //less then 3 door vehicle reindex boot and bonnet
+            if (i == doorsCount - 1 && hasBoot)
                 index = 5; // boot
-            if (i == doorsCount - 2)
+            if (i == doorsCount - 1 && hasBonnet)
+                index = 4; // bonner
+        } else if (doorsCount < 5) { //4 door
+            //less then 4 door vehicle reindex boot and bonnet
+            if (i == doorsCount - 1 && hasBoot)
+                index = 5; // boot
+            if (i == doorsCount - 2 && hasBonnet)
                 index = 4; // bonnet
         }
 
