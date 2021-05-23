@@ -4,6 +4,7 @@ setInterval(() => {
     if (!ped)
         return;
 
+    //this to prevent vehicle despawn
     if (IsPedInAnyVehicle(ped, false)) {
         if (!isPlayerInVehicle) {
             let car = GetVehiclePedIsIn(ped);
