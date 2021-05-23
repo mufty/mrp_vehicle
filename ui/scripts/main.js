@@ -19,6 +19,8 @@ $(document).ready(function() {
         return html;
     };
 
+    let audioPlayer = null;
+
     window.addEventListener('message', function(event) {
         var data = event.data;
         switch (data.type) {
@@ -61,6 +63,17 @@ $(document).ready(function() {
                 break;
             case "hide":
                 $('.main_container').hide();
+                break;
+            case "playSound":
+                if (audioPlayer) {
+                    audioPlayer.pause();
+                }
+
+                audioPlayer = new Howl({
+                    src: ["./sounds/" + data.transactionFile + ".ogg"]
+                });
+                audioPlayer.volume(data.transactionVolume);
+                audioPlayer.play();
                 break;
             default:
                 break;

@@ -16,6 +16,8 @@ files {
     'ui/images/icons/048-car-door-r-down.png',
     'ui/images/icons/048-car-door-l-up.png',
     'ui/images/icons/048-car-door-r-up.png',
+    'ui/sounds/seat-belt-in.ogg',
+    'ui/sounds/seat-belt-out.ogg',
     'ui/config.js',
     'ui/scripts/main.js',
     'ui/styles/style.css',
@@ -25,5 +27,6 @@ files {
 
 client_scripts {
     'client.js',
+    'systems/seatbelt.js',
     'controls.lua',
 }

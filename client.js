@@ -80,6 +80,14 @@ let triggerUI = function(show) {
     SendNuiMessage(JSON.stringify(obj));
 }
 
+on('mrp:playSound', (sound, volume) => {
+    SendNuiMessage(JSON.stringify({
+        type: 'playSound',
+        transactionFile: sound,
+        transactionVolume: volume
+    }));
+});
+
 on('mpr:vehicle:trigger', (show) => {
     triggerUI(show);
 });
