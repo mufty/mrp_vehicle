@@ -28,5 +28,6 @@ files {
 client_scripts {
     'client.js',
     'systems/seatbelt.js',
+    'systems/playervehicle.js',
     'controls.lua',
 }

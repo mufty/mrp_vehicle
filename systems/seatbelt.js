@@ -26,6 +26,8 @@ function fwv(entity) {
     };
 }
 
+//TODO check SetFlyThroughWindscreenParams for possible better solution
+
 let speedBuffer = [];
 let velBuffer = [];
 setInterval(() => {
