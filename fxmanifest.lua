@@ -22,6 +22,7 @@ files {
     'ui/scripts/main.js',
     'ui/styles/style.css',
     'ui/index.html',
+    'config/client.json',
     'client.js',
 }
 
