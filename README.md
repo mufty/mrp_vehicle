@@ -1,5 +1,6 @@
 # mrp_vehicle
 
+setr game_enableFlyThroughWindscreen true
 ensure mrp_vehicle
 
 hold ALT while in vehicle as a driver

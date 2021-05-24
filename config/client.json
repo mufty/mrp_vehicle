@@ -1,8 +1,8 @@
 {
     "flyThroughWindscreen": {
-        "vehMinSpeed": 30.0,
-        "unkMinSpeed": 40.0,
-        "unkModifier": 17.0,
-        "minDamage": 2000.0
+        "vehMinSpeed": 20.0,
+        "unkMinSpeed": 0.0,
+        "unkModifier": 0.0,
+        "minDamage": 0.0
     }
 }

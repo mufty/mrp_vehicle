@@ -1,5 +1,9 @@
 MRP_CLIENT = null;
 
+configFile = LoadResourceFile(GetCurrentResourceName(), 'config/client.json');
+
+config = JSON.parse(configFile);
+
 emit('mrp:getSharedObject', obj => MRP_CLIENT = obj);
 
 while (MRP_CLIENT == null) {
