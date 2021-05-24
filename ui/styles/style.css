@@ -173,11 +173,11 @@ input:checked:focus+.switch-left+.switch-right {
     color: #333;
 }
 
-.windows input {
+.checkboxGroup input {
     display: none;
 }
 
-.windows label {
+.checkboxGroup label {
     height: 25px;
     width: 25px;
     display: inline-block;
@@ -199,4 +199,12 @@ input:checked:focus+.switch-left+.switch-right {
 
 .windows .ctrlR {
     background-image: url(../images/icons/048-car-door-r-up.png);
+}
+
+.seats input:checked+.seat {
+    background-image: url(../images/icons/051-seat_red.png);
+}
+
+.seats .seat {
+    background-image: url(../images/icons/051-seat.png);
 }
