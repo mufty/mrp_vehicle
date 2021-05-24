@@ -42,15 +42,33 @@ $(document).ready(function() {
         var data = event.data;
         switch (data.type) {
             case "show":
-                $('.mid').html("");
+                if (!data.driving)
+                    $('.mid.engine').hide();
+                else
+                    $('.mid.engine').show();
+
+                if (data.engineOn) {
+                    $('.engine input').prop("checked", true);
+                } else {
+                    $('.engine input').prop("checked", false);
+                }
+
+                $('.engine input').change(function() {
+                    $.post('https://mrp_vehicle/triggerEngine', JSON.stringify({
+                        engineOn: $('.engine input').is(':checked')
+                    }));
+                });
+
+
+                $('.mid.doors').html("");
                 if (data.doors && data.doors.length > 0) {
                     for (let door of data.doors) {
                         let button = createDoorButton(door.index);
-                        $('.mid').append(button);
+                        $('.mid.doors').append(button);
                         if (door.open)
-                            $('.mid #doorIndex_' + door.index + ' input').prop("checked", true);
+                            $('.mid.doors #doorIndex_' + door.index + ' input').prop("checked", true);
 
-                        $('.mid #doorIndex_' + door.index + ' input').change(function() {
+                        $('.mid.doors #doorIndex_' + door.index + ' input').change(function() {
                             let index = door.index;
                             $.post('https://mrp_vehicle/openDoors', JSON.stringify({
                                 doors: index,

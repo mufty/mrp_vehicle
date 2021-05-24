@@ -39,8 +39,10 @@ let triggerUI = function(show) {
         windowCount--;
 
     let windows = [];
+    let driving = false;
 
     if (driver == ped) { // not a driver can't do doors and windows
+        driving = true;
         for (let i = 0; i < doorsCount; i++) {
             //reindex
             let index = i;
@@ -100,11 +102,15 @@ let triggerUI = function(show) {
         });
     }
 
+    let engineOn = GetIsVehicleEngineRunning(vehicle);
+
     obj = {
         type: action,
         doors: doors,
         windows: windows,
-        seats: seats
+        seats: seats,
+        driving: driving,
+        engineOn: engineOn
     };
 
     SendNuiMessage(JSON.stringify(obj));
@@ -170,5 +176,13 @@ on('__cfx_nui:changeSeat', (data, cb) => {
     if (IsVehicleSeatFree(vehicle, data.index))
         SetPedIntoVehicle(ped, vehicle, data.index);
 
+    cb();
+});
+
+RegisterNuiCallbackType('triggerEngine');
+on('__cfx_nui:triggerEngine', (data, cb) => {
+    let ped = PlayerPedId();
+    let vehicle = GetVehiclePedIsIn(ped, false);
+    SetVehicleEngineOn(vehicle, data.engineOn, false, true);
     cb();
 });

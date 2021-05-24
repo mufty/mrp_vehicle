@@ -9,6 +9,10 @@ setInterval(() => {
         if (!isPlayerInVehicle) {
             let car = GetVehiclePedIsIn(ped);
             SetEntityAsMissionEntity(car, true, false);
+
+            let engineOn = GetIsVehicleEngineRunning(car);
+            SetVehicleEngineOn(car, engineOn, false, true);
+
             //copied donno if needed
             NetworkRegisterEntityAsNetworked(car);
             SetVehicleHasBeenOwnedByPlayer(car, true);
