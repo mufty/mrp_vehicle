@@ -19,6 +19,23 @@ $(document).ready(function() {
         return html;
     };
 
+    createSeatButton = function(seat) {
+        let html = '<input type="checkbox" id="seat_' + seat.index + '">' +
+            '<label class="seat" for="seat_' + seat.index + '"></label>';
+        return html;
+    };
+
+    freeMySeat = function(seats) {
+        for (let i in seats) {
+            let seat = seats[i];
+            if (seat.mySeat) {
+                seat.mySeat = false;
+                $('.seats #seat_' + seat.index).prop("checked", false);
+                $('.seats #seat_' + seat.index).prop("disabled", false);
+            }
+        }
+    }
+
     let audioPlayer = null;
 
     window.addEventListener('message', function(event) {
@@ -58,7 +75,30 @@ $(document).ready(function() {
                         });
                     }
                 }
-                //TODO create windows buttons
+                $('.seats').html("");
+                if (data.seats && data.seats.length > 0) {
+                    let lastRow;
+                    for (let i in data.seats) {
+                        if (i % 2 == 0) {
+                            lastRow = $('<div class="seatRow"></div>');
+                            $('.seats').append(lastRow);
+                        }
+                        let seat = data.seats[i];
+                        let seatHtml = createSeatButton(seat);
+                        lastRow.append(seatHtml);
+                        if (!seat.empty) {
+                            $('.seats #seat_' + seat.index).prop("checked", true);
+                            $('.seats #seat_' + seat.index).prop("disabled", true);
+                        }
+                        $('.seats #seat_' + seat.index).change(function() {
+                            freeMySeat(data.seats);
+                            seat.mySeat = true;
+                            $('.seats #seat_' + seat.index).prop("checked", true);
+                            $('.seats #seat_' + seat.index).prop("disabled", true);
+                            $.post('https://mrp_vehicle/changeSeat', JSON.stringify(seat));
+                        });
+                    }
+                }
                 $('.main_container').show();
                 break;
             case "hide":

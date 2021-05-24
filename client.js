@@ -16,9 +16,7 @@ let triggerUI = function(show) {
     if (vehicle == 0)
         return;
 
-    let driver = GetPedInVehicleSeat(vehicle, -1); //check who's driver
-    if (driver != ped) // not a driver
-        return;
+    let driver = GetPedInVehicleSeat(vehicle, -1);
 
     let action = "show";
     let obj = {}
@@ -40,45 +38,73 @@ let triggerUI = function(show) {
     if (hasBonnet)
         windowCount--;
 
-    for (let i = 0; i < doorsCount; i++) {
-        //reindex
-        let index = i;
-        if (doorsCount == 3) { //3 door
-            //less then 3 door vehicle reindex boot and bonnet
-            if (i == doorsCount - 1 && hasBoot)
-                index = 5; // boot
-            if (i == doorsCount - 1 && hasBonnet)
-                index = 4; // bonner
-        } else if (doorsCount < 5) { //4 door
-            //less then 4 door vehicle reindex boot and bonnet
-            if (i == doorsCount - 1 && hasBoot)
-                index = 5; // boot
-            if (i == doorsCount - 2 && hasBonnet)
-                index = 4; // bonnet
+    let windows = [];
+
+    if (driver == ped) { // not a driver can't do doors and windows
+        for (let i = 0; i < doorsCount; i++) {
+            //reindex
+            let index = i;
+            if (doorsCount == 3) { //3 door
+                //less then 3 door vehicle reindex boot and bonnet
+                if (i == doorsCount - 1 && hasBoot)
+                    index = 5; // boot
+                if (i == doorsCount - 1 && hasBonnet)
+                    index = 4; // bonner
+            } else if (doorsCount < 5) { //4 door
+                //less then 4 door vehicle reindex boot and bonnet
+                if (i == doorsCount - 1 && hasBoot)
+                    index = 5; // boot
+                if (i == doorsCount - 2 && hasBonnet)
+                    index = 4; // bonnet
+            }
+
+            let door = {
+                index: index
+            };
+
+            let angle = GetVehicleDoorAngleRatio(vehicle, index);
+            door.open = (angle > 0);
+            doors.push(door);
         }
 
-        let door = {
-            index: index
-        };
-
-        let angle = GetVehicleDoorAngleRatio(vehicle, index);
-        door.open = (angle > 0);
-        doors.push(door);
+        for (let i = 0; i < windowCount; i++) {
+            let index = i; //+2 is because 0 and 1 is windscreen
+            windows.push({
+                index: index,
+                open: false
+            });
+        }
     }
 
-    let windows = [];
-    for (let i = 0; i < windowCount; i++) {
-        let index = i; //+2 is because 0 and 1 is windscreen
-        windows.push({
-            index: index,
-            open: false
+    let seats = [];
+    let driverSeat = {
+        index: -1,
+        mySeat: false
+    };
+    driverSeat.empty = IsVehicleSeatFree(vehicle, driverSeat.index);
+
+    let pedDriving = GetPedInVehicleSeat(vehicle, driverSeat.index);
+    if (pedDriving == ped)
+        driverSeat.mySeat = true;
+
+    seats.push(driverSeat);
+    let seatCount = GetVehicleMaxNumberOfPassengers(vehicle);
+    for (let i = 0; i < seatCount; i++) {
+        let seatFree = IsVehicleSeatFree(vehicle, i);
+        let pedInSeat = GetPedInVehicleSeat(vehicle, i);
+        let mySeat = (pedInSeat == ped);
+        seats.push({
+            index: i,
+            empty: seatFree,
+            mySeat: mySeat
         });
     }
 
     obj = {
         type: action,
         doors: doors,
-        windows: windows
+        windows: windows,
+        seats: seats
     };
 
     SendNuiMessage(JSON.stringify(obj));
@@ -130,6 +156,19 @@ on('__cfx_nui:openDoors', (data, cb) => {
         SetVehicleDoorOpen(vehicle, data.doors, false, false);
     else
         SetVehicleDoorShut(vehicle, data.doors, false);
+
+    cb();
+});
+
+RegisterNuiCallbackType('changeSeat');
+on('__cfx_nui:changeSeat', (data, cb) => {
+    let ped = PlayerPedId();
+    let vehicle = GetVehiclePedIsIn(ped, false);
+    if (vehicle == 0)
+        return;
+
+    if (IsVehicleSeatFree(vehicle, data.index))
+        SetPedIntoVehicle(ped, vehicle, data.index);
 
     cb();
 });
