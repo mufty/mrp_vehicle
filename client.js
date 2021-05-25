@@ -10,6 +10,270 @@ while (MRP_CLIENT == null) {
     print('Waiting for shared object....');
 }
 
+let getVehicleProperties = function(vehicle) {
+    if (!DoesEntityExist(vehicle))
+        return;
+
+    let [colorPrimary, colorSecondary] = GetVehicleColours(vehicle);
+    let [pearlescentColor, wheelColor] = GetVehicleExtraColours(vehicle);
+    let extras = {};
+    for (let extraId = 0; extraId < 13; extraId++) {
+        if (DoesExtraExist(vehicle, extraId)) {
+            let state = (IsVehicleExtraTurnedOn(vehicle, extraId) == 1);
+            extras[extraId + ""] = state;
+        }
+    }
+
+    return {
+        model: GetEntityModel(vehicle),
+        plate: GetVehicleNumberPlateText(vehicle).trim(),
+        plateIndex: GetVehicleNumberPlateTextIndex(vehicle),
+
+        bodyHealth: Math.round(GetVehicleBodyHealth(vehicle)),
+        engineHealth: Math.round(GetVehicleEngineHealth(vehicle)),
+
+        fuelLevel: Math.round(GetVehicleFuelLevel(vehicle)),
+        dirtLevel: Math.round(GetVehicleDirtLevel(vehicle)),
+        color1: colorPrimary,
+        color2: colorSecondary,
+
+        pearlescentColor: pearlescentColor,
+        wheelColor: wheelColor,
+
+        wheels: GetVehicleWheelType(vehicle),
+        windowTint: GetVehicleWindowTint(vehicle),
+        xenonColor: GetVehicleXenonLightsColour(vehicle),
+
+        neonEnabled: [
+            IsVehicleNeonLightEnabled(vehicle, 0),
+            IsVehicleNeonLightEnabled(vehicle, 1),
+            IsVehicleNeonLightEnabled(vehicle, 2),
+            IsVehicleNeonLightEnabled(vehicle, 3)
+        ],
+
+        neonColor: GetVehicleNeonLightsColour(vehicle),
+        extras: extras,
+        tyreSmokeColor: GetVehicleTyreSmokeColor(vehicle),
+
+        modSpoilers: GetVehicleMod(vehicle, 0),
+        modFrontBumper: GetVehicleMod(vehicle, 1),
+        modRearBumper: GetVehicleMod(vehicle, 2),
+        modSideSkirt: GetVehicleMod(vehicle, 3),
+        modExhaust: GetVehicleMod(vehicle, 4),
+        modFrame: GetVehicleMod(vehicle, 5),
+        modGrille: GetVehicleMod(vehicle, 6),
+        modHood: GetVehicleMod(vehicle, 7),
+        modFender: GetVehicleMod(vehicle, 8),
+        modRightFender: GetVehicleMod(vehicle, 9),
+        modRoof: GetVehicleMod(vehicle, 10),
+
+        modEngine: GetVehicleMod(vehicle, 11),
+        modBrakes: GetVehicleMod(vehicle, 12),
+        modTransmission: GetVehicleMod(vehicle, 13),
+        modHorns: GetVehicleMod(vehicle, 14),
+        modSuspension: GetVehicleMod(vehicle, 15),
+        modArmor: GetVehicleMod(vehicle, 16),
+
+        modTurbo: IsToggleModOn(vehicle, 18),
+        modSmokeEnabled: IsToggleModOn(vehicle, 20),
+        modXenon: IsToggleModOn(vehicle, 22),
+
+        modFrontWheels: GetVehicleMod(vehicle, 23),
+        modBackWheels: GetVehicleMod(vehicle, 24),
+
+        modPlateHolder: GetVehicleMod(vehicle, 25),
+        modVanityPlate: GetVehicleMod(vehicle, 26),
+        modTrimA: GetVehicleMod(vehicle, 27),
+        modOrnaments: GetVehicleMod(vehicle, 28),
+        modDashboard: GetVehicleMod(vehicle, 29),
+        modDial: GetVehicleMod(vehicle, 30),
+        modDoorSpeaker: GetVehicleMod(vehicle, 31),
+        modSeats: GetVehicleMod(vehicle, 32),
+        modSteeringWheel: GetVehicleMod(vehicle, 33),
+        modShifterLeavers: GetVehicleMod(vehicle, 34),
+        modAPlate: GetVehicleMod(vehicle, 35),
+        modSpeakers: GetVehicleMod(vehicle, 36),
+        modTrunk: GetVehicleMod(vehicle, 37),
+        modHydrolic: GetVehicleMod(vehicle, 38),
+        modEngineBlock: GetVehicleMod(vehicle, 39),
+        modAirFilter: GetVehicleMod(vehicle, 40),
+        modStruts: GetVehicleMod(vehicle, 41),
+        modArchCover: GetVehicleMod(vehicle, 42),
+        modAerials: GetVehicleMod(vehicle, 43),
+        modTrimB: GetVehicleMod(vehicle, 44),
+        modTank: GetVehicleMod(vehicle, 45),
+        modWindows: GetVehicleMod(vehicle, 46),
+        misc48: GetVehicleMod(vehicle, 48),
+        customWheelsFront: GetVehicleModVariation(vehicle, 23),
+        customWheelsBack: GetVehicleModVariation(vehicle, 24),
+        modLivery: GetVehicleLivery(vehicle)
+    };
+};
+
+let setVehicleProperties = function(vehicle, props) {
+    if (!DoesEntityExist(vehicle))
+        return;
+
+    let [colorPrimary, colorSecondary] = GetVehicleColours(vehicle);
+    let [pearlescentColor, wheelColor] = GetVehicleExtraColours(vehicle);
+
+    SetVehicleModKit(vehicle, 0);
+
+    if (props.plate)
+        SetVehicleNumberPlateText(vehicle, props.plate);
+    if (props.plateIndex)
+        SetVehicleNumberPlateTextIndex(vehicle, props.plateIndex);
+    if (props.bodyHealth)
+        SetVehicleBodyHealth(vehicle, props.bodyHealth + 0.01);
+    if (props.engineHealth)
+        SetVehicleEngineHealth(vehicle, props.engineHealth + 0.0);
+    if (props.fuelLevel)
+        SetVehicleFuelLevel(vehicle, props.fuelLevel + 0.0);
+    if (props.dirtLevel)
+        SetVehicleFuelLevel(vehicle, props.dirtLevel + 0.0);
+    if (props.color1)
+        SetVehicleColours(vehicle, props.color1, colorSecondary);
+    if (props.color2)
+        SetVehicleColours(vehicle, props.color1 || colorPrimary, props.color2);
+    if (props.pearlescentColor)
+        SetVehicleExtraColours(vehicle, props.pearlescentColor, wheelColor);
+    if (props.wheelColor)
+        SetVehicleExtraColours(vehicle, props.pearlescentColor || pearlescentColor, props.wheelColor);
+    if (props.wheels)
+        SetVehicleWheelType(vehicle, props.wheels);
+    if (props.windowTint)
+        SetVehicleWindowTint(vehicle, props.windowTint);
+
+    if (props.neonEnabled) {
+        SetVehicleNeonLightEnabled(vehicle, 0, props.neonEnabled[0]);
+        SetVehicleNeonLightEnabled(vehicle, 1, props.neonEnabled[1]);
+        SetVehicleNeonLightEnabled(vehicle, 2, props.neonEnabled[2]);
+        SetVehicleNeonLightEnabled(vehicle, 3, props.neonEnabled[3]);
+    }
+
+    if (props.extras) {
+        for (let extraId in props.extras) {
+            if (props.extras[extraId])
+                SetVehicleExtra(vehicle, parseInt(extraId), 0);
+            else
+                SetVehicleExtra(vehicle, parseInt(extraId), 1);
+        }
+    }
+
+    if (props.neonColor)
+        SetVehicleNeonLightsColour(vehicle, props.neonColor[0], props.neonColor[1], props.neonColor[2]);
+    if (props.xenonColor)
+        SetVehicleXenonLightsColour(vehicle, props.xenonColor);
+    if (props.modSmokeEnabled)
+        ToggleVehicleMod(vehicle, 20, true);
+    if (props.tyreSmokeColor)
+        SetVehicleTyreSmokeColor(vehicle, props.tyreSmokeColor[0], props.tyreSmokeColor[1], props.tyreSmokeColor[2]);
+    if (props.modSpoilers)
+        SetVehicleMod(vehicle, 0, props.modSpoilers, false);
+    if (props.modFrontBumper)
+        SetVehicleMod(vehicle, 1, props.modFrontBumper, false);
+    if (props.modRearBumper)
+        SetVehicleMod(vehicle, 2, props.modRearBumper, false);
+    if (props.modSideSkirt)
+        SetVehicleMod(vehicle, 3, props.modSideSkirt, false);
+    if (props.modExhaust)
+        SetVehicleMod(vehicle, 4, props.modExhaust, false);
+    if (props.modFrame)
+        SetVehicleMod(vehicle, 5, props.modFrame, false);
+    if (props.modGrille)
+        SetVehicleMod(vehicle, 6, props.modGrille, false);
+    if (props.modHood)
+        SetVehicleMod(vehicle, 7, props.modHood, false);
+    if (props.modFender)
+        SetVehicleMod(vehicle, 8, props.modFender, false);
+    if (props.modRightFender)
+        SetVehicleMod(vehicle, 9, props.modRightFender, false);
+    if (props.modRoof)
+        SetVehicleMod(vehicle, 10, props.modRoof, false);
+    if (props.modEngine)
+        SetVehicleMod(vehicle, 11, props.modEngine, false);
+    if (props.modBrakes)
+        SetVehicleMod(vehicle, 12, props.modBrakes, false);
+    if (props.modTransmission)
+        SetVehicleMod(vehicle, 13, props.modTransmission, false);
+    if (props.modHorns)
+        SetVehicleMod(vehicle, 14, props.modHorns, false);
+    if (props.modSuspension)
+        SetVehicleMod(vehicle, 15, props.modSuspension, false);
+    if (props.modArmor)
+        SetVehicleMod(vehicle, 16, props.modArmor, false);
+    if (props.modTurbo)
+        ToggleVehicleMod(vehicle, 18, props.modTurbo);
+    if (props.modXenon)
+        ToggleVehicleMod(vehicle, 22, props.modXenon);
+    if (props.modFrontWheels)
+        SetVehicleMod(vehicle, 23, props.modFrontWheels, false);
+    if (props.modBackWheels)
+        SetVehicleMod(vehicle, 24, props.modBackWheels, false);
+    if (props.modPlateHolder)
+        SetVehicleMod(vehicle, 25, props.modPlateHolder, false);
+    if (props.modVanityPlate)
+        SetVehicleMod(vehicle, 26, props.modVanityPlate, false);
+    if (props.modTrimA)
+        SetVehicleMod(vehicle, 27, props.modTrimA, false);
+    if (props.modOrnaments)
+        SetVehicleMod(vehicle, 28, props.modOrnaments, false);
+    if (props.modDashboard)
+        SetVehicleMod(vehicle, 29, props.modDashboard, false);
+    if (props.modDial)
+        SetVehicleMod(vehicle, 30, props.modDial, false);
+    if (props.modDoorSpeaker)
+        SetVehicleMod(vehicle, 31, props.modDoorSpeaker, false);
+    if (props.modSeats)
+        SetVehicleMod(vehicle, 32, props.modSeats, false);
+    if (props.modSteeringWheel)
+        SetVehicleMod(vehicle, 33, props.modSteeringWheel, false);
+    if (props.modShifterLeavers)
+        SetVehicleMod(vehicle, 34, props.modShifterLeavers, false);
+    if (props.modAPlate)
+        SetVehicleMod(vehicle, 35, props.modAPlate, false);
+    if (props.modSpeakers)
+        SetVehicleMod(vehicle, 36, props.modSpeakers, false);
+    if (props.modTrunk)
+        SetVehicleMod(vehicle, 37, props.modTrunk, false);
+    if (props.modHydrolic)
+        SetVehicleMod(vehicle, 38, props.modHydrolic, false);
+    if (props.modEngineBlock)
+        SetVehicleMod(vehicle, 39, props.modEngineBlock, false);
+    if (props.modAirFilter)
+        SetVehicleMod(vehicle, 40, props.modAirFilter, false);
+    if (props.modStruts)
+        SetVehicleMod(vehicle, 41, props.modStruts, false);
+    if (props.modArchCover)
+        SetVehicleMod(vehicle, 42, props.modArchCover, false);
+    if (props.modAerials)
+        SetVehicleMod(vehicle, 43, props.modAerials, false);
+    if (props.modTrimB)
+        SetVehicleMod(vehicle, 44, props.modTrimB, false);
+    if (props.modTank)
+        SetVehicleMod(vehicle, 45, props.modTank, false);
+    if (props.modWindows)
+        SetVehicleMod(vehicle, 46, props.modWindows, false);
+
+    if (props.misc48) {
+        SetVehicleMod(vehicle, 48, props.misc48, false);
+        SetVehicleLivery(vehicle, props.misc48);
+    }
+
+    if (props.modLivery && props.modLivery != -1) {
+        SetVehicleMod(vehicle, 48, props.modLivery, false);
+        SetVehicleLivery(vehicle, props.modLivery);
+    }
+
+    if (props.customWheelsFront) {
+        SetVehicleMod(vehicle, 23, GetVehicleMod(vehicle, 23), props.customWheelsFront);
+    }
+
+    if (props.customWheelsBack) {
+        SetVehicleMod(vehicle, 24, GetVehicleMod(vehicle, 24), props.customWheelsBack);
+    }
+};
+
 let triggerUI = function(show) {
     let ped = PlayerPedId();
     let vehicle = GetVehiclePedIsIn(ped, false);
@@ -185,4 +449,16 @@ on('__cfx_nui:triggerEngine', (data, cb) => {
     let vehicle = GetVehiclePedIsIn(ped, false);
     SetVehicleEngineOn(vehicle, data.engineOn, false, true);
     cb();
+});
+
+//TODO: Only for testing delete after
+RegisterCommand('veh', function() {
+    let ped = PlayerPedId();
+    let vehicle = GetVehiclePedIsIn(ped, false);
+    if (vehicle == 0)
+        return;
+
+    let props = getVehicleProperties(vehicle);
+    setVehicleProperties(vehicle, props);
+    console.log(JSON.stringify(props));
 });
