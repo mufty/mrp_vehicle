@@ -24,8 +24,42 @@ let getVehicleProperties = function(vehicle) {
         }
     }
 
+    let doorsCount = GetNumberOfVehicleDoors(vehicle);
+
+    let doors = {};
+
+    for (let i = 0; i < doorsCount; i++) {
+        doors[i] = false;
+        if (!GetIsDoorValid(vehicle, i))
+            doors[i] = true;
+    }
+
+    let windows = {};
+    for (let i = 0; i < 8; i++) {
+        windows[i] = false;
+        if (!IsVehicleWindowIntact(vehicle, i))
+            windows[i] = true;
+    }
+
+    let tyres = {};
+    for (let i = 0; i < 8; i++) {
+        tyres[i] = false;
+        if (IsVehicleTyreBurst(vehicle, i, false))
+            tyres[i] = 'popped';
+        if (IsVehicleTyreBurst(vehicle, i, true))
+            tyres[i] = 'gone';
+    }
+
     return {
         model: GetEntityModel(vehicle),
+        doors: doors,
+        windows: windows,
+        tyres: tyres,
+        model: GetEntityModel(vehicle),
+        tank: GetVehiclePetrolTankHealth(vehicle),
+        oil: GetVehicleOilLevel(vehicle),
+        drvlyt: GetIsLeftVehicleHeadlightDamaged(vehicle),
+        paslyt: GetIsRightVehicleHeadlightDamaged(vehicle),
         plate: GetVehicleNumberPlateText(vehicle).trim(),
         plateIndex: GetVehicleNumberPlateTextIndex(vehicle),
 
@@ -114,6 +148,9 @@ let setVehicleProperties = function(vehicle, props) {
     if (!DoesEntityExist(vehicle))
         return;
 
+    SetVehicleDeformationFixed(vehicle);
+    SetVehicleFixed(vehicle);
+
     let [colorPrimary, colorSecondary] = GetVehicleColours(vehicle);
     let [pearlescentColor, wheelColor] = GetVehicleExtraColours(vehicle);
 
@@ -123,14 +160,14 @@ let setVehicleProperties = function(vehicle, props) {
         SetVehicleNumberPlateText(vehicle, props.plate);
     if (props.plateIndex)
         SetVehicleNumberPlateTextIndex(vehicle, props.plateIndex);
-    if (props.bodyHealth)
-        SetVehicleBodyHealth(vehicle, props.bodyHealth + 0.01);
-    if (props.engineHealth)
-        SetVehicleEngineHealth(vehicle, props.engineHealth + 0.0);
+    /*if (props.bodyHealth)
+        SetVehicleBodyHealth(vehicle, props.bodyHealth + 0.0);*/
+    /*if (props.engineHealth)
+        SetVehicleEngineHealth(vehicle, props.engineHealth + 0.0);*/
     if (props.fuelLevel)
         SetVehicleFuelLevel(vehicle, props.fuelLevel + 0.0);
     if (props.dirtLevel)
-        SetVehicleFuelLevel(vehicle, props.dirtLevel + 0.0);
+        SetVehicleDirtLevel(vehicle, props.dirtLevel + 0.0);
     if (props.color1)
         SetVehicleColours(vehicle, props.color1, colorSecondary);
     if (props.color2)
@@ -272,6 +309,14 @@ let setVehicleProperties = function(vehicle, props) {
     if (props.customWheelsBack) {
         SetVehicleMod(vehicle, 24, GetVehicleMod(vehicle, 24), props.customWheelsBack);
     }
+
+    //TODO: drvlyt: GetIsLeftVehicleHeadlightDamaged(veh)
+    //TODO: paslyt: GetIsRightVehicleHeadlightDamaged(veh)
+
+    /*if (props.tank)
+        SetVehiclePetrolTankHealth(vehicle, props.tank);*/
+    if (props.oil)
+        SetVehicleOilLevel(vehicle, props.oil);
 };
 
 let triggerUI = function(show) {
@@ -459,6 +504,15 @@ RegisterCommand('veh', function() {
         return;
 
     let props = getVehicleProperties(vehicle);
+    emitNet('mrp:vehicle:save', PlayerId(), props);
+});
+
+onNet('mrp:vehicle:applyProps', (props) => {
+    let ped = PlayerPedId();
+    let vehicle = GetVehiclePedIsIn(ped, false);
+    if (vehicle == 0)
+        return;
+
     setVehicleProperties(vehicle, props);
-    console.log(JSON.stringify(props));
+    emit('mrp:vehicle:applyVehicleDamage', vehicle, props);
 });

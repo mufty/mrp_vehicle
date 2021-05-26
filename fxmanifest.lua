@@ -8,6 +8,7 @@ version '0.0.1'
 ui_page 'ui/index.html'
 
 dependencies {
+    "yarn",
     "mrp_core"
 }
 
@@ -33,4 +34,9 @@ client_scripts {
     'systems/seatbelt.js',
     'systems/playervehicle.js',
     'controls.lua',
+    'systems/vehicle_props.lua',
+}
+
+server_scripts {
+    'server.js',
 }
