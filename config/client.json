@@ -4,5 +4,10 @@
         "unkMinSpeed": 0.0,
         "unkModifier": 0.0,
         "minDamage": 0.0
+    },
+    "fuelConsumption": {
+        "lPer100Km": 1000,
+        "numOfPassengersIncrease": 2,
+        "idleConsumption": 0.0001
     }
 }

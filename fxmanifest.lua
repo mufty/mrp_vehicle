@@ -33,6 +33,7 @@ client_scripts {
     'client.js',
     'systems/seatbelt.js',
     'systems/playervehicle.js',
+    'systems/fuelconsumption.js',
     'controls.lua',
     'systems/vehicle_props.lua',
 }

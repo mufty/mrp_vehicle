@@ -21,3 +21,7 @@ RegisterCommand('vehLoad', (source, args, rawCommand) => {
         emitNet('mrp:vehicle:applyProps', source, obj);
     });
 });
+
+on('baseevents:leftVehicle', (currentVehicle, currentSeat, vehicleDisplayName) => {
+    emitNet('mrp:vehicle:leftVehicle', -1, currentVehicle, currentSeat);
+});
