@@ -14,7 +14,7 @@ setInterval(() => {
             let currentFuelLevel = GetVehicleFuelLevel(vehicle);
             //turn off engine with no fuel
             if (currentFuelLevel <= 0.8)
-                SetVehicleEngineOn(car, false, true, true);
+                SetVehicleEngineOn(vehicle, false, true, true);
 
             //engine off
             if (!GetIsVehicleEngineRunning(vehicle))
