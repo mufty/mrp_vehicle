@@ -11,11 +11,15 @@ setInterval(() => {
 
         //only do fuel consumption for the driver
         if (IsPedInAnyVehicle(ped, false) && vehicle && GetPedInVehicleSeat(vehicle, -1) == ped) {
+            let currentFuelLevel = GetVehicleFuelLevel(vehicle);
+            //turn off engine with no fuel
+            if (currentFuelLevel <= 0.8)
+                SetVehicleEngineOn(car, false, true, true);
+
             //engine off
             if (!GetIsVehicleEngineRunning(vehicle))
                 return;
 
-            let currentFuelLevel = GetVehicleFuelLevel(vehicle);
             let speed = GetEntitySpeed(vehicle);
             let speedKMH = speed * 3.6;
             let currentTS = Date.now();
@@ -37,10 +41,6 @@ setInterval(() => {
             }
 
             currentFuelLevel = currentFuelLevel - consumed;
-
-            //turn off engine with no fuel
-            if (currentFuelLevel <= 0.8)
-                SetVehicleEngineOn(car, false, true, true);
 
             if (currentFuelLevel <= 0)
                 currentFuelLevel = 0;
