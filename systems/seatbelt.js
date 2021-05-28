@@ -51,7 +51,7 @@ on('mrp:vehicle:seatbelt:trigger', () => {
         sound = "seat-belt-out";
     emit('mrp:playSound', sound, 1.0); //TODO Volume adjust
     emit('mrp:vehicle:seatbelt:change', beltOn);
-    let char = MRP_CLIENT.GetPlayerData();
+    //let char = MRP_CLIENT.GetPlayerData();
     //emit('chatMessage', char.name + " " + char.surname, [255, 255, 255], ' Seat belt: ' + (beltOn ? "ON" : "OFF") + '\n');
 });
 
