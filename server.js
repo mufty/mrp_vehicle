@@ -27,7 +27,7 @@ on('baseevents:leftVehicle', (currentVehicle, currentSeat, vehicleDisplayName) =
 });
 
 onNet('mrp:vehicle:carlock:hasAccess', (source, plate) => {
-    exports["mrp_core"].log(plate);
+    exports["mrp_core"].log(`checking access for vehicle plate [${plate}]`);
     //TODO check if has keys or is an owner of the vehicle
     emitNet('mrp:vehicle:carlock:hasAccess:response', source, true);
 });
