@@ -10,8 +10,10 @@ setInterval(() => {
             let car = GetVehiclePedIsIn(ped);
             SetEntityAsMissionEntity(car, true, false);
 
-            let engineOn = GetIsVehicleEngineRunning(car);
-            SetVehicleEngineOn(car, engineOn, false, true);
+            if (GetPedInVehicleSeat(vehicle, -1) == ped) {
+                let engineOn = GetIsVehicleEngineRunning(car);
+                SetVehicleEngineOn(car, engineOn, false, true);
+            }
 
             //copied donno if needed
             NetworkRegisterEntityAsNetworked(car);

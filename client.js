@@ -492,7 +492,11 @@ RegisterNuiCallbackType('triggerEngine');
 on('__cfx_nui:triggerEngine', (data, cb) => {
     let ped = PlayerPedId();
     let vehicle = GetVehiclePedIsIn(ped, false);
-    SetVehicleEngineOn(vehicle, data.engineOn, false, true);
+
+    //only driver can handle engine
+    if (GetPedInVehicleSeat(vehicle, -1) == ped) {
+        SetVehicleEngineOn(vehicle, data.engineOn, false, true);
+    }
     cb();
 });
 
