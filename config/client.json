@@ -9,5 +9,8 @@
         "lPer100Km": 1000,
         "numOfPassengersIncrease": 2,
         "idleConsumption": 0.0001
+    },
+    "carlock": {
+        "areaSize": 30
     }
 }

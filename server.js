@@ -25,3 +25,9 @@ RegisterCommand('vehLoad', (source, args, rawCommand) => {
 on('baseevents:leftVehicle', (currentVehicle, currentSeat, vehicleDisplayName) => {
     emitNet('mrp:vehicle:leftVehicle', -1, currentVehicle, currentSeat);
 });
+
+onNet('mrp:vehicle:carlock:hasAccess', (source, plate) => {
+    exports["mrp_core"].log(plate);
+    //TODO check if has keys or is an owner of the vehicle
+    emitNet('mrp:vehicle:carlock:hasAccess:response', source, true);
+});

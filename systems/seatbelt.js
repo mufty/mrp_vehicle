@@ -1,11 +1,3 @@
-MRP_CLIENT = null;
-
-emit('mrp:getSharedObject', obj => MRP_CLIENT = obj);
-
-while (MRP_CLIENT == null) {
-    print('Waiting for shared object....');
-}
-
 let beltOn = false;
 let inVehicle = false;
 

@@ -34,6 +34,7 @@ client_scripts {
     'systems/seatbelt.js',
     'systems/playervehicle.js',
     'systems/fuelconsumption.js',
+    'systems/carlock.js',
     'controls.lua',
     'systems/vehicle_props.lua',
 }
