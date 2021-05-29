@@ -13,8 +13,10 @@ setInterval(() => {
         if (IsPedInAnyVehicle(ped, false) && vehicle && GetPedInVehicleSeat(vehicle, -1) == ped) {
             let currentFuelLevel = GetVehicleFuelLevel(vehicle);
             //turn off engine with no fuel
-            if (currentFuelLevel <= 0.8)
+            if (currentFuelLevel <= 2) {
                 SetVehicleEngineOn(vehicle, false, true, true);
+                SetVehicleFuelLevel(vehicle, 0);
+            }
 
             //engine off
             if (!GetIsVehicleEngineRunning(vehicle))
@@ -25,7 +27,9 @@ setInterval(() => {
             let currentTS = Date.now();
             let drivingTimeHours = ((currentTS - lastFuelCheck) / (1000 * 60 * 60)) % 24;
             let distanceTraveled = speedKMH * drivingTimeHours;
-            let consumptionPerKm = config.fuelConsumption.lPer100Km / 100;
+            let vehClass = GetVehicleClass(vehicle);
+            let lPer100Km = config.fuelConsumption.lPer100Km[vehClass] || config.fuelConsumption.lPer100Km[0];
+            let consumptionPerKm = lPer100Km / 100;
             let consumed = distanceTraveled * consumptionPerKm;
 
             //increase more by number of people in vehicle
