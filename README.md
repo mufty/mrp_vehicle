@@ -6,7 +6,8 @@ ensure mrp_vehicle
 hold ALT while in vehicle as a driver
 
 # config
-config.fuelConsumption.lPer100Km is based on vehicle class of which there is 21 and each class can have different consumption per km set
+config.fuelConsumption.lPer100Km is based on vehicle class of which there is 21 and each class can have different consumption per km set.
+
 Vehicle Classes:  
 0: Compacts  
 1: Sedans  
