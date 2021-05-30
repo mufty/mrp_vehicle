@@ -30,14 +30,17 @@ setInterval(() => {
             let vehClass = GetVehicleClass(vehicle);
             let lPer100Km = config.fuelConsumption.lPer100Km[vehClass] || config.fuelConsumption.lPer100Km[0];
             let consumptionPerKm = lPer100Km / 100;
-            let consumed = distanceTraveled * consumptionPerKm;
+            let consumed;
+            if (distanceTraveled == 0)
+                consumed = config.fuelConsumption.idleConsumption;
+            else
+                consumed = distanceTraveled * consumptionPerKm;
 
             //increase more by number of people in vehicle
             let numOfPassengers = GetVehicleNumberOfPassengers(vehicle);
             let increaseByPercentage = config.fuelConsumption.numOfPassengersIncrease * numOfPassengers;
-            if (increaseByPercentage > 0) {
-                consumed += (increaseByPercentage / consumed * 100);
-            }
+            if (increaseByPercentage > 0)
+                consumed += (consumed / 100 * increaseByPercentage);
 
             if (speed <= 0) {
                 //idle consumption
