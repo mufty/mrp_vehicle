@@ -1,3 +1,5 @@
+eval(LoadResourceFile('mrp_core', 'client/helpers.js'));
+
 let dict = 'anim@mp_player_intmenu@key_fob@';
 /*let dictLoaded = false;
 RequestAnimDict(dict);
@@ -31,12 +33,6 @@ let getCarsInArea = (cars, coordsX, coordsY, coordsZ, areaSize) => {
     return result;
 };
 
-let sleep = function(ms) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
-};
-
 let lockNearestVehicle = async (nearestCar) => {
     if (!nearestCar || !nearestCar.distance) {
         console.log("No nearby vehicle to lock.");
@@ -59,11 +55,11 @@ let lockNearestVehicle = async (nearestCar) => {
             emit("mrp:lua:taskPlayAnim", ped, dict, "fob_click", 8.0, -8.0, -1, 48, 0, false, false, false)
         }
         SetVehicleLights(nearestCar.vehicle, 2);
-        await sleep(150);
+        await utils.sleep(150);
         SetVehicleLights(nearestCar.vehicle, 0);
-        await sleep(150);
+        await utils.sleep(150);
         SetVehicleLights(nearestCar.vehicle, 2);
-        await sleep(150);
+        await utils.sleep(150);
         SetVehicleLights(nearestCar.vehicle, 0);
     } else if (lock == 2) {
         SetVehicleDoorsLocked(nearestCar.vehicle, 1);
@@ -73,11 +69,11 @@ let lockNearestVehicle = async (nearestCar) => {
             emit("mrp:lua:taskPlayAnim", ped, dict, "fob_click", 8.0, -8.0, -1, 48, 0, false, false, false);
         }
         SetVehicleLights(nearestCar.vehicle, 2);
-        await sleep(150);
+        await utils.sleep(150);
         SetVehicleLights(nearestCar.vehicle, 0);
-        await sleep(150);
+        await utils.sleep(150);
         SetVehicleLights(nearestCar.vehicle, 2);
-        await sleep(150);
+        await utils.sleep(150);
         SetVehicleLights(nearestCar.vehicle, 0);
     }
 };
