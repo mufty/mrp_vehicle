@@ -36,6 +36,12 @@ $(document).ready(function() {
         }
     }
 
+    $(document).keydown(function(e) {
+        //on ESC close
+        $('.main_container').hide();
+        $.post('https://mrp_vehicle/closeUI', JSON.stringify({}));
+    });
+
     let audioPlayer = null;
 
     window.addEventListener('message', function(event) {

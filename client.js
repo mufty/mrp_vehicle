@@ -500,6 +500,12 @@ on('__cfx_nui:triggerEngine', (data, cb) => {
     cb();
 });
 
+RegisterNuiCallbackType('closeUI');
+on('__cfx_nui:closeUI', (data, cb) => {
+    SetNuiFocus(false, false);
+    cb();
+});
+
 //TODO: Only for testing delete after
 RegisterCommand('veh', function() {
     let ped = PlayerPedId();
