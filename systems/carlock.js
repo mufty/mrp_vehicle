@@ -79,47 +79,10 @@ let lockNearestVehicle = async (nearestCar) => {
 };
 
 on('mrp:vehicle:carlock', () => {
-    /*if (!dictLoaded)
-        return;*/
     let cycle = async () => {
         let ped = PlayerPedId();
-        let [coordsX, coordsY, coordsZ] = GetEntityCoords(ped);
-
-        let cars = exports["mrp_core"].EnumerateVehicles();
-        let carsNear = getCarsInArea(cars, coordsX, coordsY, coordsZ, config.carlock.areaSize);
-        if (!carsNear || carsNear.length <= 0) {
-            console.log("No vehicles in the area.");
-            return;
-        }
-
-        let nearestCar = {};
-        for (let i in carsNear) {
-            let car = carsNear[i];
-            let plate = GetVehicleNumberPlateText(car);
-            MRP_CLIENT.TriggerServerCallback('mrp:vehicle:carlock:hasAccess', [plate], (ownCar) => {
-                //note function.apply works wierd in fivem so have to do this for now
-                if (ownCar) {
-                    let [coordscarX, coordscarY, coordscarZ] = GetEntityCoords(car);
-                    let distance = Vdist(coordscarX, coordscarY, coordscarZ, coordsX, coordsY, coordsZ);
-                    if (!nearestCar.distance) {
-                        nearestCar = {
-                            distance: distance,
-                            vehicle: car
-                        };
-                    } else if (nearestCar.distance > distance) {
-                        nearestCar = {
-                            distance: distance,
-                            vehicle: car
-                        };
-                    }
-
-                    if (i == carsNear.length - 1) {
-                        //lastCar try to shut doors on found car
-                        lockNearestVehicle(nearestCar);
-                    }
-                }
-            });
-        }
+        let nearestVehicle = await MRP_CLIENT.findNearestAccessibleVehicle(ped, config.carlock.areaSize);
+        lockNearestVehicle(nearestVehicle);
     };
 
     cycle();

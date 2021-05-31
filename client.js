@@ -10,6 +10,53 @@ while (MRP_CLIENT == null) {
     print('Waiting for shared object....');
 }
 
+MRP_CLIENT.findNearestAccessibleVehicle = (ped, area, cb) => {
+    return new Promise((resolve, reject) => {
+        let exec = async () => {
+            let [coordsX, coordsY, coordsZ] = GetEntityCoords(ped);
+
+            let cars = exports["mrp_core"].EnumerateVehicles();
+            let carsNear = getCarsInArea(cars, coordsX, coordsY, coordsZ, area);
+            if (!carsNear || carsNear.length <= 0) {
+                console.log("No vehicles in the area.");
+                return;
+            }
+
+            let nearestCar = {};
+            for (let i in carsNear) {
+                let car = carsNear[i];
+                let plate = GetVehicleNumberPlateText(car);
+                MRP_CLIENT.TriggerServerCallback('mrp:vehicle:carlock:hasAccess', [plate], (ownCar) => {
+                    //note function.apply works wierd in fivem so have to do this for now
+                    if (ownCar) {
+                        let [coordscarX, coordscarY, coordscarZ] = GetEntityCoords(car);
+                        let distance = Vdist(coordscarX, coordscarY, coordscarZ, coordsX, coordsY, coordsZ);
+                        if (!nearestCar.distance) {
+                            nearestCar = {
+                                distance: distance,
+                                vehicle: car
+                            };
+                        } else if (nearestCar.distance > distance) {
+                            nearestCar = {
+                                distance: distance,
+                                vehicle: car
+                            };
+                        }
+
+                        if (i == carsNear.length - 1) {
+                            //lastCar in the list
+                            if (cb)
+                                cb(nearestCar);
+                            resolve(nearestCar);
+                        }
+                    }
+                });
+            }
+        };
+        exec();
+    });
+}
+
 let getVehicleProperties = function(vehicle) {
     if (!DoesEntityExist(vehicle))
         return;
@@ -525,4 +572,8 @@ onNet('mrp:vehicle:applyProps', (props) => {
 
     setVehicleProperties(vehicle, props);
     emit('mrp:vehicle:applyVehicleDamage', vehicle, props);
+});
+
+on('mrp:vehicle:getSharedObject', (cb) => {
+    cb(MRP_CLIENT);
 });
