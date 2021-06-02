@@ -9,8 +9,14 @@ while (MRP_SERVER == null) {
 const ObjectId = require('mongodb').ObjectId;
 
 onNet('mrp:vehicle:save', (source, props) => {
-    MRP_SERVER.create('vehicle', props, () => {
-        exports["mrp_core"].log('Vehicle created!');
+    exports["mrp_core"].log('server mrp:vehicle:save');
+    if (!props.location)
+        props.location = "OUT";
+
+    MRP_SERVER.update('vehicle', props, () => {
+        exports["mrp_core"].log('Vehicle updated!');
+    }, {
+        plate: props.plate
     });
 });
 

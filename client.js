@@ -10,6 +10,23 @@ while (MRP_CLIENT == null) {
     print('Waiting for shared object....');
 }
 
+let getCarsInArea = (cars, coordsX, coordsY, coordsZ, areaSize) => {
+    let result = [];
+    if (!cars)
+        return result;
+
+    for (let i in cars) {
+        let car = cars[i];
+
+        let [carCoordsX, carCoordsY, carCoordsZ] = GetEntityCoords(car);
+        let distance = Vdist(coordsX, coordsY, coordsZ, carCoordsX, carCoordsY, carCoordsZ);
+        if (distance <= areaSize)
+            result.push(car);
+    }
+
+    return result;
+};
+
 MRP_CLIENT.findNearestAccessibleVehicle = (ped, area, cb) => {
     return new Promise((resolve, reject) => {
         let exec = async () => {
@@ -57,7 +74,7 @@ MRP_CLIENT.findNearestAccessibleVehicle = (ped, area, cb) => {
     });
 }
 
-let getVehicleProperties = function(vehicle) {
+MRP_CLIENT.getVehicleProperties = function(vehicle) {
     if (!DoesEntityExist(vehicle))
         return;
 
@@ -191,7 +208,7 @@ let getVehicleProperties = function(vehicle) {
     };
 };
 
-let setVehicleProperties = function(vehicle, props) {
+MRP_CLIENT.setVehicleProperties = function(vehicle, props) {
     if (!DoesEntityExist(vehicle))
         return;
 
@@ -560,8 +577,8 @@ RegisterCommand('veh', function() {
     if (vehicle == 0)
         return;
 
-    let props = getVehicleProperties(vehicle);
-    emitNet('mrp:vehicle:save', PlayerId(), props);
+    let props = MRP_CLIENT.getVehicleProperties(vehicle);
+    emitNet('mrp:vehicle:save', GetPlayerServerId(PlayerId()), props);
 });
 
 onNet('mrp:vehicle:applyProps', (props) => {
@@ -570,7 +587,7 @@ onNet('mrp:vehicle:applyProps', (props) => {
     if (vehicle == 0)
         return;
 
-    setVehicleProperties(vehicle, props);
+    MRP_CLIENT.setVehicleProperties(vehicle, props);
     emit('mrp:vehicle:applyVehicleDamage', vehicle, props);
 });
 

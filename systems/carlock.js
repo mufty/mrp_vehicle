@@ -16,23 +16,6 @@ let waitPromise = new Promise((resolve) => {
 });
 waitPromise.then(() => dictLoaded = true);*/
 
-let getCarsInArea = (cars, coordsX, coordsY, coordsZ, areaSize) => {
-    let result = [];
-    if (!cars)
-        return result;
-
-    for (let i in cars) {
-        let car = cars[i];
-
-        let [carCoordsX, carCoordsY, carCoordsZ] = GetEntityCoords(car);
-        let distance = Vdist(coordsX, coordsY, coordsZ, carCoordsX, carCoordsY, carCoordsZ);
-        if (distance <= areaSize)
-            result.push(car);
-    }
-
-    return result;
-};
-
 let lockNearestVehicle = async (nearestCar) => {
     if (!nearestCar || !nearestCar.distance) {
         console.log("No nearby vehicle to lock.");
@@ -82,6 +65,8 @@ on('mrp:vehicle:carlock', () => {
     let cycle = async () => {
         let ped = PlayerPedId();
         let nearestVehicle = await MRP_CLIENT.findNearestAccessibleVehicle(ped, config.carlock.areaSize);
+        if (!nearestVehicle)
+            return;
         lockNearestVehicle(nearestVehicle);
     };
 
