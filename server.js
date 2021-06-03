@@ -35,7 +35,7 @@ on('baseevents:leftVehicle', (currentVehicle, currentSeat, vehicleDisplayName) =
 
 onNet('mrp:vehicle:carlock:hasAccess', (source, plate, uuid) => {
     plate = plate.trim();
-    exports["mrp_core"].log(`checking access for vehicle plate [${plate}]`);
+    exports["mrp_core"].log(`checking access for vehicle plate [${plate}] with uuid [${uuid}]`);
 
     let char = MRP_SERVER.getSpawnedCharacter(source);
 
