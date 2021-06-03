@@ -62,13 +62,13 @@ MRP_CLIENT.findNearestAccessibleVehicle = (ped, area, checkKeys, cb) => {
                                 vehicle: car
                             };
                         }
+                    }
 
-                        if (i == carsNear.length - 1) {
-                            //lastCar in the list
-                            if (cb)
-                                cb(nearestCar);
-                            resolve(nearestCar);
-                        }
+                    if (i == carsNear.length - 1) {
+                        //lastCar in the list
+                        if (cb)
+                            cb(nearestCar);
+                        resolve(nearestCar);
                     }
                 });
             }
