@@ -21,6 +21,21 @@ onNet('mrp:vehicle:save', (source, props) => {
     });
 });
 
+onNet('mrp:vehicle:give', (source, props, playerId) => {
+    exports["mrp_core"].log('server mrp:vehicle:give');
+    if (!props.location)
+        props.location = "OUT";
+
+    let char = MRP_SERVER.getSpawnedCharacter(playerId);
+    props.owner = char._id;
+
+    MRP_SERVER.update('vehicle', props, {
+        plate: props.plate.trim()
+    }, null, () => {
+        exports["mrp_core"].log('Vehicle updated!');
+    });
+});
+
 RegisterCommand('vehLoad', (source, args, rawCommand) => {
     let id = ObjectId("60ae41eb77b7443a74b2c771");
     MRP_SERVER.read('vehicle', id, (obj) => {

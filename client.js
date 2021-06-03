@@ -598,3 +598,17 @@ onNet('mrp:vehicle:applyProps', (props) => {
 on('mrp:vehicle:getSharedObject', (cb) => {
     cb(MRP_CLIENT);
 });
+
+RegisterCommand('giveVehicle', (source, args) => {
+    let ped = PlayerPedId();
+    let vehicle = GetVehiclePedIsIn(ped, false);
+    if (!vehicle)
+        return;
+
+    let playerId = args[0];
+    if (!playerId)
+        return;
+
+    let vehicleProperties = MRP_CLIENT.getVehicleProperties(vehicle);
+    emitNet('mrp:vehicle:give', GetPlayerServerId(PlayerId()), vehicleProperties, playerId);
+});
