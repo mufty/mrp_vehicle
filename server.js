@@ -13,11 +13,11 @@ onNet('mrp:vehicle:save', (source, props) => {
     if (!props.location)
         props.location = "OUT";
 
-    MRP_SERVER.update('vehicle', props, () => {
+    MRP_SERVER.update('vehicle', props, {
+        plate: props.plate.trim()
+    }, null, () => {
         exports["mrp_core"].log('Vehicle updated!');
         emitNet('mrp:vehicle:saved', source);
-    }, {
-        plate: props.plate.trim()
     });
 });
 
