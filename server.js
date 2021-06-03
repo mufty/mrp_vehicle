@@ -15,8 +15,9 @@ onNet('mrp:vehicle:save', (source, props) => {
 
     MRP_SERVER.update('vehicle', props, () => {
         exports["mrp_core"].log('Vehicle updated!');
+        emitNet('mrp:vehicle:saved', source);
     }, {
-        plate: props.plate
+        plate: props.plate.trim()
     });
 });
 
@@ -33,7 +34,26 @@ on('baseevents:leftVehicle', (currentVehicle, currentSeat, vehicleDisplayName) =
 });
 
 onNet('mrp:vehicle:carlock:hasAccess', (source, plate) => {
+    plate = plate.trim();
     exports["mrp_core"].log(`checking access for vehicle plate [${plate}]`);
-    //TODO check if has keys or is an owner of the vehicle
-    emitNet('mrp:vehicle:carlock:hasAccess:response', source, true);
+
+    let char = MRP_SERVER.getSpawnedCharacter(source);
+
+    let query = {
+        plate: plate
+    };
+
+    MRP_SERVER.read('vehicle', query, (vehicle) => {
+        let isOwner = false;
+        if (vehicle && MRP_SERVER.isObjectIDEqual(vehicle.owner, char._id))
+            isOwner = true;
+
+        exports["mrp_core"].log(`Player [${source}] access to [${plate}] is [${isOwner}]`);
+
+        //TODO check key access not just owner
+        emitNet('mrp:vehicle:carlock:hasAccess:response', source, {
+            owner: isOwner,
+            hasKeys: isOwner ? true : true
+        });
+    });
 });

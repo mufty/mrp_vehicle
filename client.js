@@ -27,7 +27,7 @@ let getCarsInArea = (cars, coordsX, coordsY, coordsZ, areaSize) => {
     return result;
 };
 
-MRP_CLIENT.findNearestAccessibleVehicle = (ped, area, cb) => {
+MRP_CLIENT.findNearestAccessibleVehicle = (ped, area, checkKeys, cb) => {
     return new Promise((resolve, reject) => {
         let exec = async () => {
             let [coordsX, coordsY, coordsZ] = GetEntityCoords(ped);
@@ -43,8 +43,11 @@ MRP_CLIENT.findNearestAccessibleVehicle = (ped, area, cb) => {
             for (let i in carsNear) {
                 let car = carsNear[i];
                 let plate = GetVehicleNumberPlateText(car);
-                MRP_CLIENT.TriggerServerCallback('mrp:vehicle:carlock:hasAccess', [plate], (ownCar) => {
+                MRP_CLIENT.TriggerServerCallback('mrp:vehicle:carlock:hasAccess', [plate], (access) => {
                     //note function.apply works wierd in fivem so have to do this for now
+                    let ownCar = access.owner;
+                    if (checkKeys)
+                        ownCar = access.hasKeys;
                     if (ownCar) {
                         let [coordscarX, coordscarY, coordscarZ] = GetEntityCoords(car);
                         let distance = Vdist(coordscarX, coordscarY, coordscarZ, coordsX, coordsY, coordsZ);

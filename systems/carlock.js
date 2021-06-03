@@ -64,7 +64,7 @@ let lockNearestVehicle = async (nearestCar) => {
 on('mrp:vehicle:carlock', () => {
     let cycle = async () => {
         let ped = PlayerPedId();
-        let nearestVehicle = await MRP_CLIENT.findNearestAccessibleVehicle(ped, config.carlock.areaSize);
+        let nearestVehicle = await MRP_CLIENT.findNearestAccessibleVehicle(ped, config.carlock.areaSize, true);
         if (!nearestVehicle)
             return;
         lockNearestVehicle(nearestVehicle);
