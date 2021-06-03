@@ -49,7 +49,6 @@ MRP_CLIENT.findNearestAccessibleVehicle = (ped, area, checkKeys, cb) => {
                     if (checkKeys)
                         ownCar = access.hasKeys;
 
-                    console.log("access -- " + JSON.stringify(access));
                     if (ownCar) {
                         let [coordscarX, coordscarY, coordscarZ] = GetEntityCoords(car);
                         let distance = Vdist(coordscarX, coordscarY, coordscarZ, coordsX, coordsY, coordsZ);
