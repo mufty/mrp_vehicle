@@ -98,7 +98,7 @@ MRP_CLIENT.getVehicleProperties = function(vehicle) {
 
     for (let i = 0; i < doorsCount; i++) {
         doors[i] = false;
-        if (!GetIsDoorValid(vehicle, i))
+        if (GetIsDoorValid(vehicle, i) && IsVehicleDoorDamaged(vehicle, i))
             doors[i] = true;
     }
 
