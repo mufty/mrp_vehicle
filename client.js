@@ -550,8 +550,21 @@ on('__cfx_nui:changeSeat', (data, cb) => {
     if (vehicle == 0)
         return;
 
-    if (IsVehicleSeatFree(vehicle, data.index))
+    //data check if ped was a driver and if so sync fuel
+    let currentDriver = GetPedInVehicleSeat(vehicle, -1);
+    let currentFuel = GetVehicleFuelLevel(vehicle);
+    let currentPlate = GetVehicleNumberPlateText(vehicle).trim();
+    if (currentDriver != 0 && currentDriver == ped) {
+        //I was a driver sync
+        console.log(`Send fuel level to other people for [${currentPlate}] with value [${currentFuel}]`);
+        emitNet('mrp:vehicle:server:fuelSync', GetPlayerServerId(PlayerId()), currentPlate, currentFuel);
+    }
+
+    if (IsVehicleSeatFree(vehicle, data.index)) {
+        if (data.index == -1)
+            emitNet('mrp:vehicle:server:getFuel', currentPlate);
         SetPedIntoVehicle(ped, vehicle, data.index);
+    }
 
     cb();
 });

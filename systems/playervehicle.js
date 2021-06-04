@@ -10,7 +10,7 @@ setInterval(() => {
             let car = GetVehiclePedIsIn(ped);
             SetEntityAsMissionEntity(car, true, false);
 
-            if (GetPedInVehicleSeat(vehicle, -1) == ped) {
+            if (GetPedInVehicleSeat(car, -1) == ped) {
                 let engineOn = GetIsVehicleEngineRunning(car);
                 SetVehicleEngineOn(car, engineOn, false, true);
             }

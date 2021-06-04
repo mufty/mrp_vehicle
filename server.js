@@ -6,6 +6,8 @@ while (MRP_SERVER == null) {
     print('Waiting for shared object....');
 }
 
+const FUEL_CACHE = {};
+
 const ObjectId = require('mongodb').ObjectId;
 
 onNet('mrp:vehicle:save', (source, props) => {
@@ -52,8 +54,18 @@ RegisterCommand('give_vehicle', (source, args) => {
     emitNet('mrp:vehicle:give_vehicle', source, playerId);
 }, true);
 
-on('baseevents:leftVehicle', (currentVehicle, currentSeat, vehicleDisplayName) => {
-    emitNet('mrp:vehicle:leftVehicle', -1, currentVehicle, currentSeat);
+onNet('mrp:vehicle:server:getFuel', (plate) => {
+    exports["mrp_core"].log(`Get fuel for [${plate}]`);
+    emitNet('mrp:vehicle:enteredVehicle', -1, plate, FUEL_CACHE[plate]);
+});
+
+onNet('mrp:vehicle:server:fuelSync', (source, plate, currentFuel) => {
+    FUEL_CACHE[plate] = {
+        plate: plate,
+        fuelLevel: currentFuel
+    };
+    exports["mrp_core"].log(`Sync vehicle fuel for [${plate}] with level [${currentFuel}]`);
+    emitNet('mrp:vehicle:client:updateFuel', -1, plate, currentFuel);
 });
 
 onNet('mrp:vehicle:carlock:hasAccess', (source, plate, uuid) => {

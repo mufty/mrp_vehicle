@@ -7,6 +7,12 @@ setInterval(() => {
 
     //this to prevent vehicle despawn
     if (ped && IsPedInAnyVehicle(ped, false)) {
+        if (vehicle == null) {
+            //entered vehicle get fuel from server if possible
+            let cv = GetVehiclePedIsIn(ped, false);
+            let currentPlate = GetVehicleNumberPlateText(cv).trim();
+            emitNet('mrp:vehicle:server:getFuel', currentPlate);
+        }
         vehicle = GetVehiclePedIsIn(ped, false);
 
         //only do fuel consumption for the driver
@@ -55,13 +61,48 @@ setInterval(() => {
             SetVehicleFuelLevel(vehicle, currentFuelLevel);
             lastFuelCheck = currentTS;
         }
+    } else {
+        if (vehicle != null) {
+            let lastDriver = GetLastPedInVehicleSeat(vehicle, -1);
+            if (lastDriver != 0 && lastDriver == ped) {
+                //I was a driver sync
+                let currentFuel = GetVehicleFuelLevel(vehicle);
+                let currentPlate = GetVehicleNumberPlateText(vehicle).trim();
+
+                console.log(`Send fuel level to other people for [${currentPlate}] with value [${currentFuel}] reason being leaving vehicle`);
+                emitNet('mrp:vehicle:server:fuelSync', GetPlayerServerId(PlayerId()), currentPlate, currentFuel);
+
+                if (!GetIsVehicleEngineRunning(vehicle))
+                    lastFuelCheck = Date.now();
+
+                vehicle = null;
+            }
+        }
     }
 }, 0);
 
-onNet('mrp:vehicle:leftVehicle', (currentVehicle, currentSeat) => {
-    if (vehicle == currentVehicle) {
-        vehicle = null;
-        if (!GetIsVehicleEngineRunning(currentVehicle))
-            lastFuelCheck = Date.now();
+onNet('mrp:vehicle:client:updateFuel', (plate, currentFuel) => {
+    let ped = PlayerPedId();
+    let currentVehicle = GetVehiclePedIsIn(ped, false);
+    if (!currentVehicle || currentVehicle == 0)
+        return;
+
+    let currentPlate = GetVehicleNumberPlateText(currentVehicle).trim();
+    if (currentPlate == plate) {
+        console.log(`Got fuel data from the server updating vehicle with [${currentFuel}]`);
+        SetVehicleFuelLevel(currentVehicle, currentFuel);
+    }
+});
+
+onNet('mrp:vehicle:enteredVehicle', (plate, fuelCache) => {
+    let ped = PlayerPedId();
+    let currentVehicle = GetVehiclePedIsIn(ped, false);
+    if (!currentVehicle || currentVehicle == 0)
+        return;
+    let currentPlate = GetVehicleNumberPlateText(currentVehicle).trim();
+    let isDriving = GetPedInVehicleSeat(currentVehicle, -1) == ped;
+    if (currentPlate == plate && fuelCache && isDriving) {
+        console.log(`Got fuel data from the server cache updating vehicle with [${fuelCache.fuelLevel}]`);
+        SetVehicleFuelLevel(currentVehicle, fuelCache.fuelLevel);
     }
 });
