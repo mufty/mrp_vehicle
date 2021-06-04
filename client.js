@@ -599,13 +599,12 @@ on('mrp:vehicle:getSharedObject', (cb) => {
     cb(MRP_CLIENT);
 });
 
-RegisterCommand('giveVehicle', (source, args) => {
+onNet('mrp:vehicle:give_vehicle', (playerId) => {
     let ped = PlayerPedId();
     let vehicle = GetVehiclePedIsIn(ped, false);
     if (!vehicle)
         return;
 
-    let playerId = args[0];
     if (!playerId)
         return;
 

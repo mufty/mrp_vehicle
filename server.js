@@ -44,6 +44,14 @@ RegisterCommand('vehLoad', (source, args, rawCommand) => {
     });
 });
 
+RegisterCommand('give_vehicle', (source, args) => {
+    let playerId = args[0];
+    if (!playerId)
+        return;
+
+    emitNet('mrp:vehicle:give_vehicle', source, playerId);
+}, true);
+
 on('baseevents:leftVehicle', (currentVehicle, currentSeat, vehicleDisplayName) => {
     emitNet('mrp:vehicle:leftVehicle', -1, currentVehicle, currentSeat);
 });
