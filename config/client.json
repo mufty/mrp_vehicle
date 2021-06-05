@@ -12,5 +12,6 @@
     },
     "carlock": {
         "areaSize": 30
-    }
+    },
+    "seatShuffleEnabled": false
 }

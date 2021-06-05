@@ -6,8 +6,15 @@ setInterval(() => {
 
     //this to prevent vehicle despawn
     if (IsPedInAnyVehicle(ped, false)) {
+        let car = GetVehiclePedIsIn(ped);
+        if (!config.seatShuffleEnabled) {
+            //disable seat shuffle if trying to shuffle already
+            if (GetPedInVehicleSeat(car, 0) == ped && GetIsTaskActive(ped, 165)) {
+                SetPedIntoVehicle(ped, car, 0);
+            }
+        }
+
         if (!isPlayerInVehicle) {
-            let car = GetVehiclePedIsIn(ped);
             SetEntityAsMissionEntity(car, true, false);
 
             if (GetPedInVehicleSeat(car, -1) == ped) {
