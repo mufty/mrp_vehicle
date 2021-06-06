@@ -19,7 +19,7 @@ setInterval(() => {
         if (IsPedInAnyVehicle(ped, false) && vehicle && GetPedInVehicleSeat(vehicle, -1) == ped) {
             let currentFuelLevel = GetVehicleFuelLevel(vehicle);
             //turn off engine with no fuel
-            if (currentFuelLevel <= 2) {
+            if (currentFuelLevel <= 3) {
                 SetVehicleEngineOn(vehicle, false, true, true);
                 SetVehicleFuelLevel(vehicle, 0);
             }
