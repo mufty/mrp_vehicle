@@ -35,7 +35,7 @@ let lockNearestVehicle = async (nearestCar) => {
         PlayVehicleDoorCloseSound(nearestCar.vehicle, 1);
         console.log(`Locked vehicle with plate [${plate}]`);
         if (!IsPedInAnyVehicle(ped, true)) {
-            emit("mrp:lua:taskPlayAnim", ped, dict, "fob_click", 8.0, -8.0, -1, 48, 0, false, false, false)
+            emit("mrp:lua:taskPlayAnim", ped, dict, "fob_click", 8.0, -8.0, -1, 48, 0, false, false, false);
         }
         SetVehicleLights(nearestCar.vehicle, 2);
         await utils.sleep(150);
