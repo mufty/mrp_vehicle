@@ -46,7 +46,7 @@ RegisterCommand('vehLoad', (source, args, rawCommand) => {
     });
 });
 
-RegisterCommand('give_vehicle', (source, args) => {
+RegisterCommand('giveVehicle', (source, args) => {
     let playerId = args[0];
     if (!playerId)
         return;
