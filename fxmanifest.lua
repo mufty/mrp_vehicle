@@ -35,6 +35,7 @@ client_scripts {
     'systems/playervehicle.js',
     'systems/fuelconsumption.js',
     'systems/carlock.js',
+    'systems/drift.js',
     'controls.lua',
     'systems/vehicle_props.lua',
 }

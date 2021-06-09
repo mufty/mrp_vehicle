@@ -38,14 +38,6 @@ onNet('mrp:vehicle:give', (source, props, playerId) => {
     });
 });
 
-RegisterCommand('vehLoad', (source, args, rawCommand) => {
-    let id = ObjectId("60ae41eb77b7443a74b2c771");
-    MRP_SERVER.read('vehicle', id, (obj) => {
-        exports["mrp_core"].log(obj);
-        emitNet('mrp:vehicle:applyProps', source, obj);
-    });
-});
-
 RegisterCommand('giveVehicle', (source, args) => {
     let playerId = args[0];
     if (!playerId)
@@ -93,3 +85,7 @@ onNet('mrp:vehicle:carlock:hasAccess', (source, plate, uuid) => {
         }, uuid);
     });
 });
+
+RegisterCommand('drift', (source, args, rawCommand) => {
+    emitNet('mrp:vehicle:drift', source);
+}, true);
