@@ -18,6 +18,7 @@
     },
     "seatShuffleEnabled": false,
     "gasStations": {
+        "price": 1.531,
         "area": 5.0,
         "tankArea": 3.0,
         "pumps": [

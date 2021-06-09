@@ -47,7 +47,35 @@ function isVehicleNearAnyPump(vehicle) {
 }
 
 function refuel() {
-    emit("mrp:lua:taskPlayAnim", PlayerPedId(), REFUEL_DICT, REFUEL_ANIM, 8.0, 3.0, 2000, 0, 1, false, false, false);
+    let ped = PlayerPedId();
+    if (!ped)
+        return;
+
+    let vehicle = GetVehiclePedIsIn(ped, true);
+    if (!vehicle)
+        return;
+
+    let currentLevel = GetVehicleFuelLevel(vehicle);
+    let diff = 100 - currentLevel;
+    let refuelcost = Math.ceil(diff * config.gasStations.price);
+    let char = MRP_CLIENT.GetPlayerData();
+    if (!char)
+        return;
+
+    if (char.stats.cash >= refuelcost) {
+        //TODO add confirmation with price
+        //TODO add timer to the refuel not to be instant
+        SetVehicleFuelLevel(vehicle, 100);
+        let currentPlate = GetVehicleNumberPlateText(vehicle).trim();
+        console.log(`Send fuel level to other people for [${currentPlate}] with value [100]`);
+        emitNet('mrp:vehicle:server:fuelSync', GetPlayerServerId(PlayerId()), currentPlate, 100);
+        console.log(`Paid for fuel by [${char.name + " " + char.surname}] with value [${refuelcost}]`);
+        emitNet('mrp:bankin:server:pay:cash', GetPlayerServerId(PlayerId()), refuelcost);
+        emit("mrp:lua:taskPlayAnim", PlayerPedId(), REFUEL_DICT, REFUEL_ANIM, 8.0, 3.0, 2000, 0, 1, false, false, false);
+    } else {
+        console.log(`Not enough cash`);
+        //TODO add info text for player
+    }
 }
 
 setInterval(() => {
