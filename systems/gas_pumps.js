@@ -62,16 +62,22 @@ function refuel() {
     let refuelcost = getRefuelCost(vehicle);
 
     if (char.stats.cash >= refuelcost) {
-        //TODO add confirmation with price
-        FreezeEntityPosition(ped, true);
-        emit("mrp:lua:taskPlayAnim", ped, REFUEL_DICT, REFUEL_ANIM, 8.0, 3.0, config.gasStations.refuelTimer, 0, 1, false, false, false);
-        emit('mrp:startTimer', {
-            timer: config.gasStations.refuelTimer,
-            timerAction: 'https://mrp_vehicle/refuel_done'
+        emit('mrp:popup', {
+            message: 'About to refuel the vehicle for $ ' + refuelcost + ' continue?',
+            actions: [{
+                text: 'OK',
+                url: 'https://mrp_vehicle/refuel_start'
+            }, {
+                text: 'CANCEL',
+                url: 'https://mrp_vehicle/refuel_cancel'
+            }]
         });
     } else {
-        console.log(`Not enough cash`);
-        //TODO add info text for player
+        emitNet('chat:addMessage', source, {
+            color: [255, 255, 255],
+            multiline: true,
+            args: ['Not enough cash need $ ', refuelcost]
+        });
     }
 }
 
@@ -113,12 +119,29 @@ setInterval(() => {
 RegisterNuiCallbackType('refuel');
 on('__cfx_nui:refuel', (data, cb) => {
     refuel();
-    cb();
+    cb({});
+});
+
+RegisterNuiCallbackType('refuel_cancel');
+on('__cfx_nui:refuel_cancel', (data, cb) => {
+    cb({});
+});
+
+RegisterNuiCallbackType('refuel_start');
+on('__cfx_nui:refuel_start', (data, cb) => {
+    let ped = PlayerPedId();
+    FreezeEntityPosition(ped, true);
+    emit("mrp:lua:taskPlayAnim", ped, REFUEL_DICT, REFUEL_ANIM, 8.0, 3.0, config.gasStations.refuelTimer, 0, 1, false, false, false);
+    emit('mrp:startTimer', {
+        timer: config.gasStations.refuelTimer,
+        timerAction: 'https://mrp_vehicle/refuel_done'
+    });
+    cb({});
 });
 
 RegisterNuiCallbackType('refuel_done');
 on('__cfx_nui:refuel_done', (data, cb) => {
-    cb();
+    cb({});
 
     let ped = PlayerPedId();
     if (!ped)

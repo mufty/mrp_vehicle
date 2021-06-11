@@ -509,7 +509,7 @@ RegisterNuiCallbackType('close');
 on('__cfx_nui:close', (data, cb) => {
     SetNuiFocus(false, false);
     triggerUI(false);
-    cb();
+    cb({});
 });
 
 RegisterNuiCallbackType('toggleWindow');
@@ -525,7 +525,7 @@ on('__cfx_nui:toggleWindow', (data, cb) => {
     else
         RollDownWindow(vehicle, data.index);
 
-    cb();
+    cb({});
 });
 
 RegisterNuiCallbackType('openDoors');
@@ -540,7 +540,7 @@ on('__cfx_nui:openDoors', (data, cb) => {
     else
         SetVehicleDoorShut(vehicle, data.doors, false);
 
-    cb();
+    cb({});
 });
 
 RegisterNuiCallbackType('changeSeat');
@@ -566,7 +566,7 @@ on('__cfx_nui:changeSeat', (data, cb) => {
         SetPedIntoVehicle(ped, vehicle, data.index);
     }
 
-    cb();
+    cb({});
 });
 
 RegisterNuiCallbackType('triggerEngine');
@@ -578,13 +578,13 @@ on('__cfx_nui:triggerEngine', (data, cb) => {
     if (GetPedInVehicleSeat(vehicle, -1) == ped) {
         SetVehicleEngineOn(vehicle, data.engineOn, false, true);
     }
-    cb();
+    cb({});
 });
 
 RegisterNuiCallbackType('closeUI');
 on('__cfx_nui:closeUI', (data, cb) => {
     SetNuiFocus(false, false);
-    cb();
+    cb({});
 });
 
 //TODO: Only for testing delete after
