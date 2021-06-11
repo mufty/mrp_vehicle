@@ -63,12 +63,12 @@ function refuel() {
 
     if (char.stats.cash >= refuelcost) {
         emit('mrp:popup', {
-            message: 'About to refuel the vehicle for $ ' + refuelcost + ' continue?',
+            message: config.locale.gasStations_confirm_msg.replace('${refuelcost}', refuelcost),
             actions: [{
-                text: 'OK',
+                text: config.locale.gasStations_confirm_msg_ok,
                 url: 'https://mrp_vehicle/refuel_start'
             }, {
-                text: 'CANCEL',
+                text: config.locale.gasStations_confirm_msg_cancel,
                 url: 'https://mrp_vehicle/refuel_cancel'
             }]
         });
@@ -76,7 +76,7 @@ function refuel() {
         emitNet('chat:addMessage', source, {
             color: [255, 255, 255],
             multiline: true,
-            args: ['Not enough cash need $ ', refuelcost]
+            args: [config.locale.gasStations_poor_no_money.replace('${refuelcost}', refuelcost)]
         });
     }
 }

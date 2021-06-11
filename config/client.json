@@ -1,6 +1,10 @@
 {
     "locale": {
-        "refuel": "Refuel vehicle"
+        "refuel": "Refuel vehicle",
+        "gasStations_confirm_msg": "About to refuel the vehicle for $ ${refuelcost} continue?",
+        "gasStations_confirm_msg_ok": "OK",
+        "gasStations_confirm_msg_cancel": "CANCEL",
+        "gasStations_poor_no_money": "You are poor you don't even have & &{refuelcost} gas money."
     },
     "flyThroughWindscreen": {
         "vehMinSpeed": 20.0,
