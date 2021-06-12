@@ -10,7 +10,7 @@ while (MRP_CLIENT == null) {
     print('Waiting for shared object....');
 }
 
-let getCarsInArea = (cars, coordsX, coordsY, coordsZ, areaSize) => {
+getCarsInArea = (cars, coordsX, coordsY, coordsZ, areaSize) => {
     let result = [];
     if (!cars)
         return result;

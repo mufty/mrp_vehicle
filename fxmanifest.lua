@@ -39,6 +39,7 @@ client_scripts {
     'systems/gas_pumps.js',
     'controls.lua',
     'systems/vehicle_props.lua',
+    'systems/flip.js',
 }
 
 server_scripts {

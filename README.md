@@ -3,7 +3,9 @@
 setr game_enableFlyThroughWindscreen true
 ensure mrp_vehicle
 
-hold ALT while in vehicle as a driver
+hold ALT while in vehicle
+
+/flip to flip vehicle that's on the roof
 
 # config
 config.fuelConsumption.lPer100Km is based on vehicle class of which there is 21 and each class can have different consumption per km set.

@@ -4,7 +4,9 @@
         "gasStations_confirm_msg": "About to refuel the vehicle for $ ${refuelcost} continue?",
         "gasStations_confirm_msg_ok": "OK",
         "gasStations_confirm_msg_cancel": "CANCEL",
-        "gasStations_poor_no_money": "You are poor you don't even have & &{refuelcost} gas money."
+        "gasStations_poor_no_money": "You are poor you don't even have & &{refuelcost} gas money.",
+        "flip_car":"Flip vehicle",
+        "flip_car_getout":"Get out of vehicle first!"
     },
     "flyThroughWindscreen": {
         "vehMinSpeed": 20.0,
@@ -16,6 +18,12 @@
         "lPer100Km": [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
         "numOfPassengersIncrease": 2,
         "idleConsumption": 0.0001
+    },
+    "flip": {
+        "areaSize": 5,
+        "timer": 10000,
+        "anim_dict": "missbigscore2big_11",
+        "anim": "push_trolly_stand"
     },
     "carlock": {
         "areaSize": 30
