@@ -15,7 +15,7 @@
         "minDamage": 0.0
     },
     "fuelConsumption": {
-        "lPer100Km": [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+        "lPer100Km": [70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70],
         "numOfPassengersIncrease": 2,
         "idleConsumption": 0.0001
     },
