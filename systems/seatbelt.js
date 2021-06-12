@@ -25,6 +25,8 @@ setInterval(() => {
             config.flyThroughWindscreen.unkModifier,
             config.flyThroughWindscreen.minDamage);
     } else {
+        if (beltOn)
+            emit('mrp:vehicle:seatbelt:change', false);
         inVehicle = false;
         beltOn = false;
     }
