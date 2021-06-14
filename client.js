@@ -400,8 +400,10 @@ function triggerUI(show) {
     if (!show) {
         action = "hide";
         SetNuiFocus(false, false);
+        SetNuiFocusKeepInput(false);
     } else {
         SetNuiFocus(true, true);
+        SetNuiFocusKeepInput(true);
     }
 
     let doorsCount = GetNumberOfVehicleDoors(vehicle);
