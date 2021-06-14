@@ -11,20 +11,20 @@ const FUEL_CACHE = {};
 const ObjectId = require('mongodb').ObjectId;
 
 onNet('mrp:vehicle:save', (source, props) => {
-    exports["mrp_core"].log('server mrp:vehicle:save');
+    console.log('server mrp:vehicle:save');
     if (!props.location)
         props.location = "OUT";
 
     MRP_SERVER.update('vehicle', props, {
         plate: props.plate.trim()
     }, null, () => {
-        exports["mrp_core"].log('Vehicle updated!');
+        console.log('Vehicle updated!');
         emitNet('mrp:vehicle:saved', source);
     });
 });
 
 onNet('mrp:vehicle:give', (source, props, playerId) => {
-    exports["mrp_core"].log('server mrp:vehicle:give');
+    console.log('server mrp:vehicle:give');
     if (!props.location)
         props.location = "OUT";
 
@@ -34,7 +34,7 @@ onNet('mrp:vehicle:give', (source, props, playerId) => {
     MRP_SERVER.update('vehicle', props, {
         plate: props.plate.trim()
     }, null, () => {
-        exports["mrp_core"].log('Vehicle updated!');
+        console.log('Vehicle updated!');
     });
 });
 
@@ -47,7 +47,7 @@ RegisterCommand('giveVehicle', (source, args) => {
 }, true);
 
 onNet('mrp:vehicle:server:getFuel', (plate) => {
-    exports["mrp_core"].log(`Get fuel for [${plate}]`);
+    console.log(`Get fuel for [${plate}]`);
     emitNet('mrp:vehicle:enteredVehicle', -1, plate, FUEL_CACHE[plate]);
 });
 
@@ -56,13 +56,13 @@ onNet('mrp:vehicle:server:fuelSync', (source, plate, currentFuel) => {
         plate: plate,
         fuelLevel: currentFuel
     };
-    exports["mrp_core"].log(`Sync vehicle fuel for [${plate}] with level [${currentFuel}]`);
+    console.log(`Sync vehicle fuel for [${plate}] with level [${currentFuel}]`);
     emitNet('mrp:vehicle:client:updateFuel', -1, plate, currentFuel);
 });
 
 onNet('mrp:vehicle:carlock:hasAccess', (source, plate, uuid) => {
     plate = plate.trim();
-    exports["mrp_core"].log(`checking access for vehicle plate [${plate}] with uuid [${uuid}]`);
+    console.log(`checking access for vehicle plate [${plate}] with uuid [${uuid}]`);
 
     let char = MRP_SERVER.getSpawnedCharacter(source);
 
@@ -75,7 +75,7 @@ onNet('mrp:vehicle:carlock:hasAccess', (source, plate, uuid) => {
         if (vehicle && MRP_SERVER.isObjectIDEqual(vehicle.owner, char._id))
             isOwner = true;
 
-        exports["mrp_core"].log(`Player [${source}] access to [${plate}] is [${isOwner}]`);
+        console.log(`Player [${source}] access to [${plate}] is [${isOwner}]`);
 
         //TODO check key access not just owner
         emitNet('mrp:vehicle:carlock:hasAccess:response', source, {

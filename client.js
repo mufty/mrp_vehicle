@@ -387,7 +387,7 @@ MRP_CLIENT.setVehicleProperties = function(vehicle, props) {
         SetVehicleOilLevel(vehicle, props.oil);
 };
 
-let triggerUI = function(show) {
+function triggerUI(show) {
     let ped = PlayerPedId();
     let vehicle = GetVehiclePedIsIn(ped, false);
     if (vehicle == 0)
