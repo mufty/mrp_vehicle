@@ -20,7 +20,10 @@ files {
     'ui/styles/style.css',
     'ui/index.html',
     'config/client.json',
+    'meta/*.meta',
 }
+
+data_file 'HANDLING_FILE' 'meta/handling.meta'
 
 client_scripts {
     '@mrp_core/shared/debug.js',
