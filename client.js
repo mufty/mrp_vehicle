@@ -267,107 +267,105 @@ MRP_CLIENT.setVehicleProperties = function(vehicle, props) {
 
     if (props.neonColor)
         SetVehicleNeonLightsColour(vehicle, props.neonColor[0], props.neonColor[1], props.neonColor[2]);
-    if (props.xenonColor)
+    if (!isNaN(props.xenonColor))
         SetVehicleXenonLightsColour(vehicle, props.xenonColor);
     if (props.modSmokeEnabled)
         ToggleVehicleMod(vehicle, 20, true);
     if (props.tyreSmokeColor)
         SetVehicleTyreSmokeColor(vehicle, props.tyreSmokeColor[0], props.tyreSmokeColor[1], props.tyreSmokeColor[2]);
-    if (props.modSpoilers)
+    if (!isNaN(props.modSpoilers))
         SetVehicleMod(vehicle, 0, props.modSpoilers, false);
-    if (props.modFrontBumper)
+    if (!isNaN(props.modFrontBumper))
         SetVehicleMod(vehicle, 1, props.modFrontBumper, false);
-    if (props.modRearBumper)
+    if (!isNaN(props.modRearBumper))
         SetVehicleMod(vehicle, 2, props.modRearBumper, false);
-    if (props.modSideSkirt)
+    if (!isNaN(props.modSideSkirt))
         SetVehicleMod(vehicle, 3, props.modSideSkirt, false);
-    if (props.modExhaust)
+    if (!isNaN(props.modExhaust))
         SetVehicleMod(vehicle, 4, props.modExhaust, false);
-    if (props.modFrame)
+    if (!isNaN(props.modFrame))
         SetVehicleMod(vehicle, 5, props.modFrame, false);
-    if (props.modGrille)
+    if (!isNaN(props.modGrille))
         SetVehicleMod(vehicle, 6, props.modGrille, false);
-    if (props.modHood)
+    if (!isNaN(props.modHood))
         SetVehicleMod(vehicle, 7, props.modHood, false);
-    if (props.modFender)
+    if (!isNaN(props.modFender))
         SetVehicleMod(vehicle, 8, props.modFender, false);
-    if (props.modRightFender)
+    if (!isNaN(props.modRightFender))
         SetVehicleMod(vehicle, 9, props.modRightFender, false);
-    if (props.modRoof)
+    if (!isNaN(props.modRoof))
         SetVehicleMod(vehicle, 10, props.modRoof, false);
-    if (props.modEngine)
+    if (!isNaN(props.modEngine))
         SetVehicleMod(vehicle, 11, props.modEngine, false);
-    if (props.modBrakes)
+    if (!isNaN(props.modBrakes))
         SetVehicleMod(vehicle, 12, props.modBrakes, false);
-    if (props.modTransmission)
+    if (!isNaN(props.modTransmission))
         SetVehicleMod(vehicle, 13, props.modTransmission, false);
-    if (props.modHorns)
+    if (!isNaN(props.modHorns))
         SetVehicleMod(vehicle, 14, props.modHorns, false);
-    if (props.modSuspension)
+    if (!isNaN(props.modSuspension))
         SetVehicleMod(vehicle, 15, props.modSuspension, false);
-    if (props.modArmor)
+    if (!isNaN(props.modArmor))
         SetVehicleMod(vehicle, 16, props.modArmor, false);
-    if (props.modTurbo)
+    if (!isNaN(props.modTurbo))
         ToggleVehicleMod(vehicle, 18, props.modTurbo);
-    if (props.modXenon)
+    if (!isNaN(props.modXenon))
         ToggleVehicleMod(vehicle, 22, props.modXenon);
-    if (props.modFrontWheels)
+    if (!isNaN(props.modFrontWheels))
         SetVehicleMod(vehicle, 23, props.modFrontWheels, false);
-    if (props.modBackWheels)
+    if (!isNaN(props.modBackWheels))
         SetVehicleMod(vehicle, 24, props.modBackWheels, false);
-    if (props.modPlateHolder)
+    if (!isNaN(props.modPlateHolder))
         SetVehicleMod(vehicle, 25, props.modPlateHolder, false);
-    if (props.modVanityPlate)
+    if (!isNaN(props.modVanityPlate))
         SetVehicleMod(vehicle, 26, props.modVanityPlate, false);
-    if (props.modTrimA)
+    if (!isNaN(props.modTrimA))
         SetVehicleMod(vehicle, 27, props.modTrimA, false);
-    if (props.modOrnaments)
+    if (!isNaN(props.modOrnaments))
         SetVehicleMod(vehicle, 28, props.modOrnaments, false);
-    if (props.modDashboard)
+    if (!isNaN(props.modDashboard))
         SetVehicleMod(vehicle, 29, props.modDashboard, false);
-    if (props.modDial)
+    if (!isNaN(props.modDial))
         SetVehicleMod(vehicle, 30, props.modDial, false);
-    if (props.modDoorSpeaker)
+    if (!isNaN(props.modDoorSpeaker))
         SetVehicleMod(vehicle, 31, props.modDoorSpeaker, false);
-    if (props.modSeats)
+    if (!isNaN(props.modSeats))
         SetVehicleMod(vehicle, 32, props.modSeats, false);
-    if (props.modSteeringWheel)
+    if (!isNaN(props.modSteeringWheel))
         SetVehicleMod(vehicle, 33, props.modSteeringWheel, false);
-    if (props.modShifterLeavers)
+    if (!isNaN(props.modShifterLeavers))
         SetVehicleMod(vehicle, 34, props.modShifterLeavers, false);
-    if (props.modAPlate)
+    if (!isNaN(props.modAPlate))
         SetVehicleMod(vehicle, 35, props.modAPlate, false);
-    if (props.modSpeakers)
+    if (!isNaN(props.modSpeakers))
         SetVehicleMod(vehicle, 36, props.modSpeakers, false);
-    if (props.modTrunk)
+    if (!isNaN(props.modTrunk))
         SetVehicleMod(vehicle, 37, props.modTrunk, false);
-    if (props.modHydrolic)
+    if (!isNaN(props.modHydrolic))
         SetVehicleMod(vehicle, 38, props.modHydrolic, false);
-    if (props.modEngineBlock)
+    if (!isNaN(props.modEngineBlock))
         SetVehicleMod(vehicle, 39, props.modEngineBlock, false);
-    if (props.modAirFilter)
+    if (!isNaN(props.modAirFilter))
         SetVehicleMod(vehicle, 40, props.modAirFilter, false);
-    if (props.modStruts)
+    if (!isNaN(props.modStruts))
         SetVehicleMod(vehicle, 41, props.modStruts, false);
-    if (props.modArchCover)
+    if (!isNaN(props.modArchCover))
         SetVehicleMod(vehicle, 42, props.modArchCover, false);
-    if (props.modAerials)
+    if (!isNaN(props.modAerials))
         SetVehicleMod(vehicle, 43, props.modAerials, false);
-    if (props.modTrimB)
+    if (!isNaN(props.modTrimB))
         SetVehicleMod(vehicle, 44, props.modTrimB, false);
-    if (props.modTank)
+    if (!isNaN(props.modTank))
         SetVehicleMod(vehicle, 45, props.modTank, false);
-    if (props.modWindows)
+    if (!isNaN(props.modWindows))
         SetVehicleMod(vehicle, 46, props.modWindows, false);
 
-    if (props.misc48) {
-        console.log(`setting misc48 as livery ${props.misc48}`);
+    if (!isNaN(props.misc48)) {
         SetVehicleMod(vehicle, 48, props.misc48, false);
         SetVehicleLivery(vehicle, props.misc48);
     }
 
-    if (props.modLivery && props.modLivery != -1) {
-        console.log(`setting modLivery as livery ${props.modLivery}`);
+    if (!isNaN(props.modLivery) && props.modLivery != -1) {
         SetVehicleMod(vehicle, 48, props.modLivery, false);
         SetVehicleLivery(vehicle, props.modLivery);
     }
