@@ -589,15 +589,22 @@ on('__cfx_nui:closeUI', (data, cb) => {
     cb({});
 });
 
-//TODO: Only for testing delete after
-RegisterCommand('veh', function() {
+onNet('mrp:vehicle:save:owned', function() {
+    console.log('try to save owned vehicle');
     let ped = PlayerPedId();
     let vehicle = GetVehiclePedIsIn(ped, false);
     if (vehicle == 0)
         return;
 
-    let props = MRP_CLIENT.getVehicleProperties(vehicle);
-    emitNet('mrp:vehicle:save', GetPlayerServerId(PlayerId()), props);
+    let plate = GetVehicleNumberPlateText(vehicle);
+    MRP_CLIENT.TriggerServerCallback('mrp:vehicle:carlock:hasAccess', [plate], (access) => {
+        let ownCar = access.owner;
+        if (!ownCar)
+            return;
+
+        let props = MRP_CLIENT.getVehicleProperties(vehicle);
+        emitNet('mrp:vehicle:save', GetPlayerServerId(PlayerId()), props);
+    });
 });
 
 onNet('mrp:vehicle:applyProps', (props) => {
