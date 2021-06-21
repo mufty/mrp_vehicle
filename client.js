@@ -361,11 +361,13 @@ MRP_CLIENT.setVehicleProperties = function(vehicle, props) {
         SetVehicleMod(vehicle, 46, props.modWindows, false);
 
     if (props.misc48) {
+        console.log(`setting misc48 as livery ${props.misc48}`);
         SetVehicleMod(vehicle, 48, props.misc48, false);
         SetVehicleLivery(vehicle, props.misc48);
     }
 
     if (props.modLivery && props.modLivery != -1) {
+        console.log(`setting modLivery as livery ${props.modLivery}`);
         SetVehicleMod(vehicle, 48, props.modLivery, false);
         SetVehicleLivery(vehicle, props.modLivery);
     }
