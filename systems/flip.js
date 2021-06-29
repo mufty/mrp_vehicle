@@ -45,7 +45,7 @@ RegisterCommand("flip", () => {
     vehicleToFlip = nearestCar;
 
     FreezeEntityPosition(ped, true);
-    emit("mrp:lua:taskPlayAnim", ped, config.flip.anim_dict, config.flip.anim, 8.0, 3.0, config.flip.timer, 0, 1, false, false, false);
+    emit("mrp:lua:taskPlayAnim", ped, config.flip.anim_dict, config.flip.anim, 1.0, -1.0, config.flip.timer, 49, 1, false, false, false);
     emit('mrp:startTimer', {
         timer: config.flip.timer,
         timerAction: 'https://mrp_vehicle/flip_done'
