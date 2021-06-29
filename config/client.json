@@ -26,7 +26,8 @@
         "anim": "push_trolly_stand"
     },
     "carlock": {
-        "areaSize": 30
+        "areaSize": 30,
+        "lockVehicles": true
     },
     "seatShuffleEnabled": false,
     "gasStations": {
