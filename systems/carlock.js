@@ -73,6 +73,19 @@ on('mrp:vehicle:carlock', () => {
     cycle();
 });
 
+on('mrp:lockpick', (data) => {
+    emit('mrp:client:minigame', 'lockpick', data, 'https://mrp_vehicle/lockpick_done');
+});
+
+RegisterNuiCallbackType('lockpick_done');
+on('__cfx_nui:lockpick_done', (data, cb) => {
+    cb({});
+
+    console.log(JSON.stringify(data));
+    let ped = PlayerPedId();
+    ClearPedSecondaryTask(ped);
+});
+
 RegisterCommand('carlock', () => {
     emit('mrp:vehicle:carlock');
 })
