@@ -578,7 +578,12 @@ on('__cfx_nui:triggerEngine', (data, cb) => {
 
     //only driver can handle engine
     if (GetPedInVehicleSeat(vehicle, -1) == ped) {
-        SetVehicleEngineOn(vehicle, data.engineOn, false, true);
+        if (MRPVehicleKeys.hasKey(vehicle))
+            SetVehicleEngineOn(vehicle, data.engineOn, false, true);
+        else {
+            let plate = GetVehicleNumberPlateText(vehicle);
+            console.log(`You don't have keys for vehicle [${plate}]`);
+        }
     }
     cb({});
 });
@@ -632,4 +637,11 @@ onNet('mrp:vehicle:give_vehicle', (playerId) => {
 
     let vehicleProperties = MRP_CLIENT.getVehicleProperties(vehicle);
     emitNet('mrp:vehicle:give', GetPlayerServerId(PlayerId()), vehicleProperties, playerId);
+});
+
+onNet('mrp:vehicle:client:giveKeys', (plates) => {
+    for (let plate of plates) {
+        console.log(`Give player a key for vehicle [${plate}]`);
+        MRPVehicleKeys.giveKey(plate);
+    }
 });

@@ -86,6 +86,36 @@ onNet('mrp:vehicle:carlock:hasAccess', (source, plate, uuid) => {
     });
 });
 
+function loadKeys(source, char) {
+    MRP_SERVER.find('vehicle', {
+        owner: char._id
+    }, undefined, undefined, (result) => {
+        let plates = [];
+        for (let veh of result) {
+            plates.push(veh.plate.trim());
+        }
+        emitNet('mrp:vehicle:client:giveKeys', source, plates);
+    });
+}
+
+on('mrp:spawn', (source, characterToUse, spawnPoint) => {
+    loadKeys(source, characterToUse);
+});
+
+on('onResourceStart', (resource) => {
+    let resName = GetCurrentResourceName();
+    if (resName != resource)
+        return;
+
+    let players = MRP_SERVER.getPlayersServer();
+    for (let player of players) {
+        let spawnedChar = MRP_SERVER.getSpawnedCharacter(player.id);
+        if (spawnedChar) {
+            loadKeys(player.id, spawnedChar);
+        }
+    }
+});
+
 RegisterCommand('drift', (source, args, rawCommand) => {
     emitNet('mrp:vehicle:drift', source);
 }, true);
