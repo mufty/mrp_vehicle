@@ -74,16 +74,69 @@ on('mrp:vehicle:carlock', () => {
 });
 
 on('mrp:lockpick', (data) => {
-    emit('mrp:client:minigame', 'lockpick', data, 'https://mrp_vehicle/lockpick_done');
+    let veh = exports["mrp_core"].GetClosestVehicle();
+    let ped = PlayerPedId();
+    if (veh && ped) {
+        let [pedX, pedY, pedZ] = GetEntityCoords(ped);
+        let [vehX, vehY, vehZ] = GetEntityCoords(veh);
+        let distance = Vdist(pedX, pedY, pedZ, vehX, vehY, vehZ);
+        if (distance <= config.carlock.lockpickDistance) {
+            let lock = GetVehicleDoorLockStatus(veh);
+            if (lock == 2) {
+                emit('mrp:client:minigame', 'lockpick', data, 'https://mrp_vehicle/lockpick_done');
+            } else {
+                ClearPedSecondaryTask(ped);
+                emit('chat:addMessage', {
+                    template: '<div class="chat-message nonemergency">{0}</div>',
+                    args: [
+                        "Vehicle not locked"
+                    ]
+                });
+            }
+        } else {
+            ClearPedSecondaryTask(ped);
+            emit('chat:addMessage', {
+                template: '<div class="chat-message nonemergency">{0}</div>',
+                args: [
+                    "No vehicle near"
+                ]
+            });
+        }
+    } else {
+        ClearPedSecondaryTask(ped);
+        emit('chat:addMessage', {
+            template: '<div class="chat-message nonemergency">{0}</div>',
+            args: [
+                "No vehicle near"
+            ]
+        });
+    }
 });
 
 RegisterNuiCallbackType('lockpick_done');
 on('__cfx_nui:lockpick_done', (data, cb) => {
     cb({});
 
-    console.log(JSON.stringify(data));
     let ped = PlayerPedId();
     ClearPedSecondaryTask(ped);
+
+    if (!data.success) {
+        //chance of break
+        let d = data.data;
+        let breakRng = utils.getRandomInt(1, d.breakChance);
+        if (breakRng == 1) {
+            //unluck
+            emit('inventory:client:ItemBox', d, "use");
+            emitNet('inventory:server:RemoveItem', d.name, 1, d.slot);
+        }
+    } else {
+        //unlock
+        let veh = exports["mrp_core"].GetClosestVehicle();
+        if (!veh)
+            return;
+
+        SetVehicleDoorsLocked(veh, 1);
+    }
 });
 
 RegisterCommand('carlock', () => {
@@ -91,3 +144,4 @@ RegisterCommand('carlock', () => {
 })
 
 RegisterKeyMapping('carlock', 'Lock/Unlock vehicle', 'keyboard', '9');
+7

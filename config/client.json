@@ -26,6 +26,7 @@
         "anim": "push_trolly_stand"
     },
     "carlock": {
+        "lockpickDistance": 2.5,
         "areaSize": 30,
         "lockVehicles": true
     },
