@@ -130,8 +130,8 @@ on('__cfx_nui:lockpick_done', (data, cb) => {
         let breakRng = utils.getRandomInt(1, d.breakChance);
         if (breakRng == 1) {
             //unluck
-            emit('inventory:client:ItemBox', d, "use");
-            emitNet('inventory:server:RemoveItem', d.name, 1, d.slot);
+            emit('mrp:inventory:client:ItemBox', d, "use");
+            emitNet('mrp:inventory:server:RemoveItem', d.name, 1, d.slot);
         }
     } else {
         //unlock
