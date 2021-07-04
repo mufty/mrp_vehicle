@@ -1,6 +1,7 @@
 MRP_CLIENT = null;
 
 configFile = LoadResourceFile(GetCurrentResourceName(), 'config/client.json');
+eval(LoadResourceFile('mrp_core', 'client/helpers.js'));
 
 config = JSON.parse(configFile);
 
@@ -569,6 +570,41 @@ on('__cfx_nui:changeSeat', (data, cb) => {
     }
 
     cb({});
+});
+
+RegisterNuiCallbackType('give_keys');
+on('__cfx_nui:give_keys', (data, cb) => {
+    cb({});
+
+    let ped = PlayerPedId();
+    let vehicle = GetVehiclePedIsIn(ped, false);
+    if (vehicle == 0) {
+        vehicle = exports["mrp_core"].GetClosestVehicle();
+    }
+
+    if (vehicle == 0) {
+        emit('chat:addMessage', {
+            template: '<div class="chat-message nonemergency">{0}</div>',
+            args: [
+                config.locale.no_vehicle_near
+            ]
+        });
+        return;
+    }
+
+    if (MRPVehicleKeys.hasKey(vehicle)) {
+        //get all players in vehicle
+        let players = utils.getAllPlayersInVehicle(vehicle);
+        let plate = GetVehicleNumberPlateText(vehicle);
+        emitNet('mrp:vehicle:server:giveKeys', players, plate);
+    } else {
+        emit('chat:addMessage', {
+            template: '<div class="chat-message nonemergency">{0}</div>',
+            args: [
+                config.locale.no_vehicle_keys
+            ]
+        });
+    }
 });
 
 RegisterNuiCallbackType('triggerEngine');

@@ -1,20 +1,6 @@
 eval(LoadResourceFile('mrp_core', 'client/helpers.js'));
 
 let dict = 'anim@mp_player_intmenu@key_fob@';
-/*let dictLoaded = false;
-RequestAnimDict(dict);
-
-let waitPromise = new Promise((resolve) => {
-    let waitForDict = () => {
-        if (HasAnimDictLoaded(dict)) {
-            resolve();
-        } else {
-            setTimeout(waitForDict, 1);
-        }
-    };
-    waitForDict();
-});
-waitPromise.then(() => dictLoaded = true);*/
 
 let lockNearestVehicle = async (nearestCar) => {
     if (!nearestCar || !nearestCar.distance) {

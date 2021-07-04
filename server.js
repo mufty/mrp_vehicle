@@ -1,3 +1,5 @@
+const config = require('./config/client.json');
+
 MRP_SERVER = null;
 
 emit('mrp:getSharedObject', obj => MRP_SERVER = obj);
@@ -100,6 +102,12 @@ function loadKeys(source, char) {
 
 on('mrp:spawn', (source, characterToUse, spawnPoint) => {
     loadKeys(source, characterToUse);
+
+    emitNet('mrp:radial_menu:addMenuItem', source, {
+        id: 'giveKeys',
+        text: config.locale.give_keys,
+        action: 'https://mrp_vehicle/give_keys'
+    });
 });
 
 on('onResourceStart', (resource) => {
@@ -119,3 +127,15 @@ on('onResourceStart', (resource) => {
 RegisterCommand('drift', (source, args, rawCommand) => {
     emitNet('mrp:vehicle:drift', source);
 }, true);
+
+onNet('mrp:vehicle:server:giveKeys', (players, plate) => {
+    for (let player of players) {
+        emitNet('mrp:vehicle:client:giveKeys', player, [plate]);
+        emitNet('chat:addMessage', player, {
+            template: '<div class="chat-message nonemergency">{0}</div>',
+            args: [
+                config.locale.recieved_vehicle_keys
+            ]
+        });
+    }
+});

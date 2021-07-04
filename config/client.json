@@ -6,7 +6,11 @@
         "gasStations_confirm_msg_cancel": "CANCEL",
         "gasStations_poor_no_money": "You are poor you don't even have & &{refuelcost} gas money.",
         "flip_car":"Flip vehicle",
-        "flip_car_getout":"Get out of vehicle first!"
+        "flip_car_getout":"Get out of vehicle first!",
+        "give_keys": "Give keys",
+        "no_vehicle_near": "No vehicle near",
+        "no_vehicle_keys": "You don't have keys for this vehicle",
+        "recieved_vehicle_keys": "You recieved keys to vehicle"
     },
     "flyThroughWindscreen": {
         "vehMinSpeed": 20.0,
