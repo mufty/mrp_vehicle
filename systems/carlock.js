@@ -85,7 +85,7 @@ on('mrp:lockpick', (data) => {
             if (lock == 2 || IsPedInAnyVehicle(ped, true)) {
                 let startMinigame = true;
                 if (IsPedInAnyVehicle(ped, true)) {
-                    let veh = GetVehiclePedIsIn(ped, false);
+                    veh = GetVehiclePedIsIn(ped, false);
                     let currentDriver = GetPedInVehicleSeat(veh, -1);
                     if (ped != currentDriver) {
                         console.log("Tried lockpicking a vehicle while not a driver");
@@ -93,9 +93,14 @@ on('mrp:lockpick', (data) => {
                     }
                 }
 
-                if (startMinigame)
+                if (startMinigame) {
+                    let alarmRng = utils.getRandomInt(1, config.carlock.alarmChance);
+                    if (alarmRng == 1) {
+                        SetVehicleAlarm(veh, true);
+                        StartVehicleAlarm(veh);
+                    }
                     emit('mrp:client:minigame', 'lockpick', data, 'https://mrp_vehicle/lockpick_done');
-                else
+                } else
                     ClearPedSecondaryTask(ped);
             } else {
                 ClearPedSecondaryTask(ped);
@@ -146,6 +151,10 @@ on('__cfx_nui:lockpick_done', (data, cb) => {
         //unlock
         if (IsPedInAnyVehicle(ped, true)) {
             let veh = GetVehiclePedIsIn(ped, false);
+
+            if (IsVehicleAlarmActivated(veh))
+                SetVehicleAlarm(veh, false);
+
             let currentDriver = GetPedInVehicleSeat(veh, -1);
             if (ped == currentDriver) {
                 MRPVehicleKeys.giveKey(veh);
@@ -154,6 +163,9 @@ on('__cfx_nui:lockpick_done', (data, cb) => {
             let veh = exports["mrp_core"].GetClosestVehicle();
             if (!veh)
                 return;
+
+            if (IsVehicleAlarmActivated(veh))
+                SetVehicleAlarm(veh, false);
 
             SetVehicleDoorsLocked(veh, 1);
         }

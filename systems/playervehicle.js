@@ -17,10 +17,13 @@ setInterval(() => {
         if (!isPlayerInVehicle) {
             SetEntityAsMissionEntity(car, true, false);
 
-            if (GetPedInVehicleSeat(car, -1) == ped) {
+            /*if (GetPedInVehicleSeat(car, -1) == ped) {
                 let engineOn = GetIsVehicleEngineRunning(car);
                 SetVehicleEngineOn(car, engineOn, false, true);
-            }
+            }*/
+
+            let engineOn = GetIsVehicleEngineRunning(car);
+            SetVehicleEngineOn(car, engineOn, false, true);
 
             //copied donno if needed
             NetworkRegisterEntityAsNetworked(car);
@@ -45,6 +48,8 @@ setInterval(() => {
             let pedd = GetPedInVehicleSeat(veh, -1);
             if (pedd)
                 SetPedCanBeDraggedOut(pedd, false);
+            else
+                SetVehicleEngineOn(vehicle, false, true, true);
         }
     }
 }, 0);

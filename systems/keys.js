@@ -9,7 +9,7 @@ MRPVehicleKeys = {
         if (isNaN(key)) {
             plate = key.trim();
         } else {
-            plate = GetVehicleNumberPlateText(key);
+            plate = GetVehicleNumberPlateText(key).trim();
         }
         if (!plate)
             return false;
@@ -24,7 +24,7 @@ MRPVehicleKeys = {
         if (isNaN(key)) {
             plate = key.trim();
         } else {
-            plate = GetVehicleNumberPlateText(key);
+            plate = GetVehicleNumberPlateText(key).trim();
         }
         if (!plate)
             return;
@@ -44,7 +44,7 @@ MRPVehicleKeys = {
         if (isNaN(key)) {
             plate = key.trim();
         } else {
-            plate = GetVehicleNumberPlateText(key);
+            plate = GetVehicleNumberPlateText(key).trim();
         }
         if (!plate)
             return false;

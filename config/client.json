@@ -28,7 +28,8 @@
     "carlock": {
         "lockpickDistance": 2.5,
         "areaSize": 30,
-        "lockVehicles": true
+        "lockVehicles": true,
+        "alarmChance": 3
     },
     "seatShuffleEnabled": false,
     "gasStations": {
