@@ -9,7 +9,8 @@ ui_page 'ui/index.html'
 
 dependencies {
     "yarn",
-    "mrp_core"
+    "mrp_core",
+    "mrp_radial_menu"
 }
 
 files {
