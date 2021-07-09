@@ -1,34 +1,13 @@
 let vehicleToFlip;
 RegisterCommand("flip", () => {
     let ped = PlayerPedId();
-    let [coordsX, coordsY, coordsZ] = GetEntityCoords(ped);
-    let cars = exports["mrp_core"].EnumerateVehicles();
-    let carsNear = getCarsInArea(cars, coordsX, coordsY, coordsZ, config.flip.areaSize);
-    if (!carsNear || carsNear.length <= 0) {
-        console.log("No vehicles in the area.");
-        return;
-    }
+    let nearestCar = {
+        distance: 0,
+        vehicle: MRP_CLIENT.getVehicleInFront()
+    };
 
-    let nearestCar = {};
-    for (let i in carsNear) {
-        let car = carsNear[i];
-        let [coordscarX, coordscarY, coordscarZ] = GetEntityCoords(car);
-        let distance = Vdist(coordscarX, coordscarY, coordscarZ, coordsX, coordsY, coordsZ);
-        if (!nearestCar.distance) {
-            nearestCar = {
-                distance: distance,
-                vehicle: car
-            };
-        } else if (nearestCar.distance > distance) {
-            nearestCar = {
-                distance: distance,
-                vehicle: car
-            };
-        }
-    }
-
-    if (!nearestCar.distance) {
-        console.log("No vehicles in the area.");
+    if (nearestCar.vehicle == 0) {
+        console.log("No vehicles in front.");
         return;
     }
 

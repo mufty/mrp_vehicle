@@ -579,7 +579,7 @@ on('__cfx_nui:give_keys', (data, cb) => {
     let ped = PlayerPedId();
     let vehicle = GetVehiclePedIsIn(ped, false);
     if (vehicle == 0) {
-        vehicle = exports["mrp_core"].GetClosestVehicle();
+        vehicle = MRP_CLIENT.getVehicleInFront();
     }
 
     if (vehicle == 0) {
