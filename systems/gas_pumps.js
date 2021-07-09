@@ -55,7 +55,7 @@ function refuel() {
     if (!ped)
         return;
 
-    let vehicle = GetVehiclePedIsIn(ped, true);
+    let vehicle = MRP_CLIENT.getVehicleInFront();
     if (!vehicle)
         return;
 
@@ -88,12 +88,13 @@ function getRefuelCost(vehicle) {
     return refuelcost;
 }
 
+let menuAdded = false;
 setInterval(() => {
     let ped = PlayerPedId();
     if (!ped)
         return;
 
-    let vehicle = GetVehiclePedIsIn(ped, true);
+    let vehicle = MRP_CLIENT.getVehicleInFront();
     if (!vehicle)
         return;
 
@@ -104,15 +105,18 @@ setInterval(() => {
     //also check the position of player PED relative to the tank bone
     if (isVehicleNearAnyPump(vehicle) && dist <= config.gasStations.tankArea && !IsPedInVehicle(ped, vehicle, false)) {
         //near pump start logic
-        emit('mrp:radial_menu:addMenuItem', {
-            id: 'refuel',
-            text: config.locale.refuel,
-            action: 'https://mrp_vehicle/refuel'
-        });
+        if (!menuAdded)
+            emit('mrp:radial_menu:addMenuItem', {
+                id: 'refuel',
+                text: config.locale.refuel,
+                action: 'https://mrp_vehicle/refuel'
+            });
+        menuAdded = true;
     } else {
         emit('mrp:radial_menu:removeMenuItem', {
             id: 'refuel'
         });
+        menuAdded = false;
     }
 }, 0);
 
@@ -149,7 +153,7 @@ on('__cfx_nui:refuel_done', (data, cb) => {
 
     FreezeEntityPosition(ped, false);
 
-    let vehicle = GetVehiclePedIsIn(ped, true);
+    let vehicle = MRP_CLIENT.getVehicleInFront();
     if (!vehicle)
         return;
 
