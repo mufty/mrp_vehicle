@@ -389,6 +389,11 @@ MRP_CLIENT.setVehicleProperties = function(vehicle, props) {
 };
 
 function triggerUI(show) {
+    if (show)
+        MRP_CLIENT.setPlayerMetadata("inMenu", true);
+    else
+        MRP_CLIENT.setPlayerMetadata("inMenu", false);
+
     let ped = PlayerPedId();
     let vehicle = GetVehiclePedIsIn(ped, false);
     if (vehicle == 0)
