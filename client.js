@@ -48,7 +48,7 @@ MRP_CLIENT.findNearestAccessibleVehicle = (ped, area, checkKeys, cb) => {
                     //note function.apply works wierd in fivem so have to do this for now
                     let ownCar = access.owner;
                     if (checkKeys)
-                        ownCar = access.hasKeys;
+                        ownCar = MRPVehicleKeys.hasKey(car);
 
                     if (ownCar) {
                         let [coordscarX, coordscarY, coordscarZ] = GetEntityCoords(car);
