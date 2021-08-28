@@ -34,5 +34,31 @@ Vehicle Classes:
 20: Commercial  
 21: Trains  
 
+# handling
+<!-- C class -->
+<!-- 
+<fInitialDriveForce value="0.140000" />
+<fInitialDriveMaxFlatVel value="120.000000" />
+-->
+<!-- B class -->
+<!-- 
+<fInitialDriveMaxFlatVel value="150.000000" />
+-->
+<!-- A class -->
+<!-- 
+<fInitialDriveForce value="0.50800" />
+<fInitialDriveMaxFlatVel value="180.000000" />
+-->
+<!-- S class -->
+<!-- 
+<fInitialDriveForce value="0.700000" />
+<fInitialDriveMaxFlatVel value="200.000000" />
+-->
+<!-- X class -->
+<!-- 
+<fInitialDriveForce value="1.000000" />
+<fInitialDriveMaxFlatVel value="220.000000" />
+-->
+
 #credits
 Icons made by [Freepik](https://www.freepik.com) from [Flaticon](https://www.flaticon.com/)
