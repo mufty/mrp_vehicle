@@ -29,6 +29,7 @@ data_file 'HANDLING_FILE' 'meta/handling.meta'
 client_scripts {
     '@mrp_core/shared/debug.js',
     'client.js',
+    'vehicle_names.js',
     'systems/*.js',
     'controls.js',
 }
