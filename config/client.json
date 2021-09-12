@@ -10,7 +10,8 @@
         "give_keys": "Give keys",
         "no_vehicle_near": "No vehicle near",
         "no_vehicle_keys": "You don't have keys for this vehicle",
-        "recieved_vehicle_keys": "You recieved keys to vehicle"
+        "recieved_vehicle_keys": "You recieved keys to vehicle",
+        "vehicle_stalled": "Vehicle stalled"
     },
     "flyThroughWindscreen": {
         "vehMinSpeed": 20.0,
@@ -36,6 +37,7 @@
         "alarmChance": 3
     },
     "seatShuffleEnabled": false,
+    "stallThreshold": 30,
     "gasStations": {
         "price": 1.531,
         "refuelTimer": 10000,
