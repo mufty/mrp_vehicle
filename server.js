@@ -33,9 +33,12 @@ onNet('mrp:vehicle:give', (source, props, playerId) => {
     let char = MRP_SERVER.getSpawnedCharacter(playerId);
     props.owner = char._id;
 
+    let plate = props.plate;
+
     MRP_SERVER.update('vehicle', props, {
-        plate: props.plate.trim()
+        plate: plate.trim()
     }, null, () => {
+        emit('mrp:vehicle:server:giveKeys', [playerId], plate);
         console.log('Vehicle updated!');
     });
 });
