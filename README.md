@@ -46,17 +46,17 @@ Vehicle Classes:
 -->
 <!-- A class -->
 <!-- 
-<fInitialDriveForce value="0.50800" />
+<fInitialDriveForce value="0.40800" />
 <fInitialDriveMaxFlatVel value="140.000000" />
 -->
 <!-- S class -->
 <!-- 
-<fInitialDriveForce value="0.700000" />
+<fInitialDriveForce value="0.400000" /> no more than 0.5
 <fInitialDriveMaxFlatVel value="160.000000" />
 -->
 <!-- X class -->
 <!-- 
-<fInitialDriveForce value="1.000000" />
+<fInitialDriveForce value="0.500000" />
 <fInitialDriveMaxFlatVel value="180.000000" />
 -->
 
